@@ -1,0 +1,161 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: veni db resources in private subnets
+
+Parameters:
+  DBUser:
+    Type: String
+    Default: master
+  DBPassword:
+    Type: String
+    Default: deDiGDJQcafnyrML
+  DBName:
+    Type: String
+    Default: veni
+  StackName:
+    Description: An Application name that will be prefixed to resource names
+    Type: String
+    Default: veni-db-stack
+  Stage:
+    Type: String
+  PrivateSubnet1:
+    Type: String
+    MinLength: 1
+  PrivateSubnet2:
+    Type: String
+    MinLength: 1
+  ApiVPC:
+    Type: String
+    MinLength: 1
+  ECSSecurityGroup:
+    Type: String
+    MinLength: 1
+
+Resources:
+  #Aurora SQL
+  RDSCluster:
+    Properties: 
+      DBClusterParameterGroupName: 
+        Ref: RDSDBClusterParameterGroup
+      Engine: aurora
+      EngineMode: serverless
+      MasterUserPassword: 
+        Ref: DBPassword
+      MasterUsername: 
+        Ref: DBUser
+      DBClusterIdentifier: !Sub ${StackName}
+      DatabaseName: 
+        Ref: DBName
+      DBSubnetGroupName: 
+        Ref: DBSubnetGroup    
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} Aurora Serverless Cluster   
+        - Key: Project
+          Value: .Net Core on AWS          
+      VpcSecurityGroupIds:
+        - Ref: DBSecurityGroup                 
+    Type: "AWS::RDS::DBCluster"
+    DependsOn: DBSubnetGroup
+  RDSDBClusterParameterGroup: 
+    Properties: 
+      Description: "CloudFormation Sample Aurora Cluster Parameter Group"
+      Family: aurora5.6
+      Parameters:
+        time_zone: US/Eastern
+    Type: "AWS::RDS::DBClusterParameterGroup"
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties: 
+      DBSubnetGroupDescription: RDS Subnet group for Aurora Serverless
+      DBSubnetGroupName: !Sub ${StackName}-aurora-subnet-group
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} RDS Subnet Group
+        - Key: Project
+          Value: veni
+  
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${StackName}-ecs-db-sg
+      GroupDescription: Access to the RDS
+      VpcId: !Ref ApiVPC
+
+  #this ingress allows inbound traffic to the db from all private IP addresses of the network interfaces assosiated with the source security group
+  #in the case all instances in all resources in the ecs cluster I think
+  #see https://stackoverflow.com/questions/45416882/aws-security-group-include-another-security-group 
+  #security group rules
+  DBSecurityGroupIngressTCP:
+    Type: AWS::EC2::SecurityGroupIngress
+    DependsOn: DBSecurityGroup
+    Properties:
+      Description: Ingress 3306 
+      GroupId: !Ref 'DBSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      SourceSecurityGroupId: !Ref ECSSecurityGroup
+
+  #Amazon Systems Manager
+  SystemsManagerBasicParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/AuroraConnectionString"
+      Type: "String"
+      Value: !Join [ "",
+          [
+            "server=",
+            !Join [ "", [ !GetAtt RDSCluster.Endpoint.Address, "" ] ],
+            ";port=",
+            !GetAtt RDSCluster.Endpoint.Port,
+            ";database=", !Join [ "", [ Ref: DBName, "" ] ],
+            ";uid=", !Join [ "", [ Ref: DBUser, "" ] ],
+            ";password=", !Join [ "", [ Ref: DBPassword, "" ] ],
+            ";SSLMode=None"
+          ]
+        ]       
+      Description: "SSM Parameter for maintaining the Aurora DB connection string."
+      # AllowedPattern: "^[a-zA-Z]{1,10}$"
+      Tags:
+        "Environment": "DEV"  
+  SystemsManagerBasicDBNameParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/DBName"
+      Type: "String"
+      Value: !Join [ "", [ Ref: DBName, "" ] ]
+      Description: "SSM Parameter for maintaining the Aurora DBName."
+      Tags:
+        "Environment": "DEV"    
+  SystemsManagerBasicDBUserParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/DBUser"
+      Type: "String"
+      Value: !Join [ "", [ Ref: DBUser, "" ] ]
+      Description: "SSM Parameter for maintaining the Aurora DBUser."
+      Tags:
+        "Environment": "DEV"          
+  SystemsManagerBasicDBPasswordParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/DBPassword"
+      Type: "String"
+      Value: !Join [ "", [ Ref: DBPassword, "" ] ]
+      Description: "SSM Parameter for maintaining the Aurora DBPassword."
+      Tags:
+        "Environment": "DEV"     
+  SystemsManagerBasicDBHostParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/DBHost"
+      Type: "String"
+      Value: !Join [ "", [ !GetAtt RDSCluster.Endpoint.Address, "" ] ] 
+      Description: "SSM Parameter for maintaining the Aurora DB Host."
+      Tags:
+        "Environment": "DEV"                         

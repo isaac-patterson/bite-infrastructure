@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  Stage:
+    Type: String
+
+Resources:
+  UserWebAppStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: base-website-stack.yaml
+      Parameters:
+        StackName: user-webapp
+        Stage: !Ref Stage
+        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/7cf23892-5f66-4de2-b3b1-e27ff89c08bd #cert for veni.buzz
+        S3BucketName: user-webapp
+        Domain: veni.buzz
+        Route53Domain: veni.buzz.
+        CloudFrontPriceClass: PriceClass_All
+  
+  RetailWebAppStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: base-website-stack.yaml
+      Parameters:
+        StackName: retail-webapp
+        Stage: !Ref Stage
+        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/f73e7b8a-8b5b-4b4f-92f6-02776317d04c #cert for veni.work
+        S3BucketName: retail-webapp
+        Domain: veni.work
+        Route53Domain: veni.work.
+        CloudFrontPriceClass: PriceClass_All
+
+  MiscStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: misc-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+
+  VPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: vpc-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+  
+  PublicSubnetStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: public-subnet-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+        PublicSubnet1: !GetAtt VPCStack.Outputs.PublicSubnet1
+        PublicSubnet2: !GetAtt VPCStack.Outputs.PublicSubnet2
+        PrivateSubnet1RouteTable: !GetAtt VPCStack.Outputs.PrivateSubnet1RouteTable
+        PrivateSubnet2RouteTable: !GetAtt VPCStack.Outputs.PrivateSubnet2RouteTable
+        ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
+
+  DBStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: veni-db-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+        PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
+        PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
+        ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
+        ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
+  
+  UserBFFStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: user-bff-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+        PublicSubnet1: !GetAtt VPCStack.Outputs.PublicSubnet1
+        PublicSubnet2: !GetAtt VPCStack.Outputs.PublicSubnet2
+        ECRRepository: MiscStack.Outputs.ECRRepository
+        ClusterName: PublicSubnetStack.Outputs.ClusterName
+        ECSSecurityGroup: PublicSubnetStack.Outputs.ECSSecurityGroup
+        UserBFFTargetGroup: PublicSubnetStack.Outputs.UserBFFTargetGroup

@@ -1,0 +1,308 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Resources in the public subnet 
+
+Parameters:
+  ECSDeployEnv: #not used at the moment as havnt set up dev environments
+    Type: String
+    Default: Dev
+    AllowedValues:
+    - Dev
+    - Test
+    - Prod
+  StackName:
+    Description: An Application name that will be prefixed to resource names
+    Type: String
+    Default: public-stack
+  Stage:
+    Type: String
+  PublicSubnet1:
+    Type: String
+  PublicSubnet2:
+    Type: String
+  PrivateSubnet1RouteTable:
+    Type: String
+  PrivateSubnet2RouteTable:
+    Type: String
+  ApiVPC:
+    Type: String
+
+Resources:
+  #Specifies an Elastic IP (EIP) address for natgateway
+  NAT1EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  #Specifies an Elastic IP (EIP) address for natgateway
+  NAT2EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  #internet cannot get through NAT gateway explicitily allowed, mostly used for outbound traffic
+  #can be used for other things aswell: eg.  yum updates, external database connections, wget calls, etc
+  #private subnets connected to natgateway
+  NATGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+        - NAT1EIP
+        - AllocationId
+      SubnetId: !Ref PublicSubnet1
+  PrivateSubnetNATGateway1Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateSubnet1RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: NATGateway1
+  
+  NATGateway2:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+        - NAT2EIP
+        - AllocationId
+      SubnetId: !Ref PublicSubnet2
+  PrivateSubnetNATGateway2Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateSubnet2RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: NATGateway2
+
+  #ECS Cluster
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub ${StackName}-ecs-cluster
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} ECS Cluster
+        - Key: Project
+          Value: veni cluster       
+
+  ECSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${StackName}-ecs-app-sg
+      GroupDescription: Access to the Fargate containers
+      VpcId: !Ref ApiVPC
+      SecurityGroupIngress:
+      # Allow access to ALB from anywhere on the internet
+      - CidrIp: 0.0.0.0/0
+        IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+  
+  #this ingress allows inbound traffic to ECS services from all private IP addresses of the network interfaces assosiated with the source security group
+  #in this case from the public load ballancer
+  #every ec2 instance must have a security group
+
+  ECSSecurityGroupIngressTCP:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress TCP All Port from ELB SG
+      GroupId: !Ref 'ECSSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 1
+      ToPort: 65535
+      SourceSecurityGroupId: !Ref 'PLBSecurityGroup'
+
+  #ALB
+  #acts as a firewall for the public load ballancer instances, controls both inbound and outbound traffic
+  PLBSecurityGroup:
+      Type: "AWS::EC2::SecurityGroup"
+      Properties:
+          GroupDescription: Access to the public facing load balancer
+          GroupName: !Sub ${StackName}-elb-sg
+          VpcId: !Ref ApiVPC
+          #adds inbound rules to security group
+          SecurityGroupIngress: 
+            - 
+              CidrIp: "0.0.0.0/0"
+              FromPort: 80
+              IpProtocol: "tcp"
+              ToPort: 80
+            - 
+              CidrIp: "0.0.0.0/0"
+              FromPort: 443
+              IpProtocol: "tcp"
+              ToPort: 443
+
+  #distributes incoming application traffic to ec2 instances
+  PublicLoadBalancer:
+      Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
+      Properties:
+          Name: !Sub ${StackName}-elb
+          Scheme: "internet-facing"
+          Type: "application"
+          Subnets: 
+            - !Ref PublicSubnet1
+            - !Ref PublicSubnet2
+          SecurityGroups: 
+            - !Ref PLBSecurityGroup
+          IpAddressType: "ipv4"
+
+  # A listener checks for connection requests using a specified protocol and port. 
+  #The rules that you define for a listener determine how the load balancer routes requests to its registered targets.
+  HTTPSListener:
+      Type: "AWS::ElasticLoadBalancingV2::Listener"
+      Properties:
+          LoadBalancerArn: !Ref PublicLoadBalancer
+          Port: 443
+          Protocol: "HTTPS"
+          SslPolicy: "ELBSecurityPolicy-2016-08"
+          Certificates: 
+            - 
+              CertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/8e4400a9-79a4-44cd-8793-d1f681da305c
+              
+          DefaultActions: 
+            - 
+              Order: 1
+              TargetGroupArn: !Ref UserBFFTargetGroup
+              Type: "forward"
+
+  #redirects all http traffic to https listener
+  HTTPListener:
+      Type: "AWS::ElasticLoadBalancingV2::Listener"
+      Properties:
+          LoadBalancerArn: !Ref PublicLoadBalancer
+          Port: 80
+          Protocol: "HTTP"
+          DefaultActions: 
+            - 
+              Order: 1
+              RedirectConfig: 
+                  Protocol: "HTTPS"
+                  Port: "443"
+                  Host: "#{host}"
+                  Path: "/#{path}"
+                  Query: "#{query}"
+                  StatusCode: "HTTP_301"
+              Type: "redirect"
+
+  #This target group routes requests to the UserBFF fargate instance
+  UserBFFTargetGroup:
+      Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+      Properties:
+          HealthCheckIntervalSeconds: 10
+          HealthCheckPath: "/api/values"
+          Port: 80
+          Protocol: "HTTP"
+          HealthCheckPort: "traffic-port"
+          HealthCheckProtocol: "HTTP"
+          HealthCheckTimeoutSeconds: 5
+          UnhealthyThresholdCount: 2
+          TargetType: ip #maybe change this to 'instance'?
+          Matcher: 
+              HttpCode: "200"
+          HealthyThresholdCount: 5
+          VpcId: !Ref ApiVPC
+          Name: !Sub ${StackName}-userbff-tgt-grp
+          HealthCheckEnabled: true
+
+  #This target group routes requests to the RetailBFF fargate instance
+  RetailBFFTargetGroup:
+      Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+      Properties:
+          HealthCheckIntervalSeconds: 10
+          HealthCheckPath: "/api/values"
+          Port: 80
+          Protocol: "HTTP"
+          HealthCheckPort: "traffic-port"
+          HealthCheckProtocol: "HTTP"
+          HealthCheckTimeoutSeconds: 5
+          UnhealthyThresholdCount: 2
+          TargetType: ip #maybe change this to 'instance'?
+          Matcher: 
+              HttpCode: "200"
+          HealthyThresholdCount: 5
+          VpcId: !Ref ApiVPC
+          Name: !Sub ${StackName}-retailbff-tgt-grp
+          HealthCheckEnabled: true
+  #If this listener rule is met, traffic is fowarded to the RetailBFFTargetGroup
+  UserBFFListenerRule:
+      Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
+      Properties:
+          Priority: "1"
+          ListenerArn: !Ref HTTPSListener
+          Conditions: 
+            - 
+              Field: "path-pattern"
+              Values: 
+                - "/user"
+          Actions: 
+            - 
+              Type: "forward"
+              TargetGroupArn: !Ref UserBFFTargetGroup
+              Order: 1
+              ForwardConfig: 
+                  TargetGroups: 
+                    - 
+                      TargetGroupArn: !Ref UserBFFTargetGroup
+                      Weight: 1
+                  TargetGroupStickinessConfig: 
+                      Enabled: false
+
+  #If this listener rule is met, traffic is fowarded to the RetailBFFTargetGroup
+  RetailBFFListenerRule:
+      Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
+      Properties:
+          Priority: "2"
+          ListenerArn: !Ref HTTPSListener
+          Conditions: 
+            - 
+              Field: "path-pattern"
+              Values: 
+                - "/retail"
+          Actions: 
+            - 
+              Type: "forward"
+              TargetGroupArn: !Ref RetailBFFTargetGroup
+              Order: 1
+              ForwardConfig: 
+                  TargetGroups: 
+                    - 
+                      TargetGroupArn: !Ref RetailBFFTargetGroup
+                      Weight: 1
+                  TargetGroupStickinessConfig: 
+                      Enabled: false
+
+Outputs:  
+  ClusterName:
+    Description: The name of the ECS cluster
+    Value: !Ref 'ECSCluster'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ClusterName' ] ]       
+  ExternalUrl:
+    Description: The url of the external load balancer
+    Value: !Join ['', ['http://', !GetAtt 'PublicLoadBalancer.DNSName']]
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ExternalUrl' ] ]
+  ECSSecurityGroup:
+    Description: ECSSecurityGroup for the loadbalancer
+    Value: !Ref 'ECSSecurityGroup'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ECSSecurityGroup' ] ]
+  HTTPSListener:
+    Description: The ARN of the public load balancer's Listener
+    Value: !Ref HTTPSListener
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'HTTPSListener' ] ]      
+  UserBFFTargetGroup:
+      Description: The created UserBFFTargetGroup
+      Value: !Ref UserBFFTargetGroup
+      Export:
+        Name: !Join [ ':', [ !Ref 'AWS::StackName', 'UserBFFTargetGroup' ] ]
+  RetailBFFTargetGroup:
+      Description: The created TargetGroup 2
+      Value: !Ref RetailBFFTargetGroup
+      Export:
+        Name: !Join [ ':', [ !Ref 'AWS::StackName', 'RetailBFFTargetGroup' ] ]
+  PLBSecurityGroup:
+      Description: the securty group for the ALB
+      Value: !Ref PLBSecurityGroup
