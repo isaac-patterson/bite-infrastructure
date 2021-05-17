@@ -1,51 +1,6 @@
-CREATE TABLE IF NOT EXISTS ToDos(
-    id MEDIUMINT not null auto_increment,
-    CreatedTime TIMESTAMP DEFAULT now(),
-    Status VARCHAR(50),
-    Task VARCHAR(50),
-    PRIMARY KEY(id)
-);
-
-CREATE TABLE IF NOT EXISTS Restaurant(
-    RestaurantId MEDIUMINT not null auto_increment,
-    Name VARCHAR(50),
-    Description VARCHAR(150),
-    CountryCode VARCHAR(10),
-    Address VARCHAR(200),
-    CreatedTime TIMESTAMP DEFAULT now(),
-    PRIMARY KEY(RestaurantId)
-);
-
-CREATE TABLE IF NOT EXISTS MenuItem(
-    MenuItemId MEDIUMINT not null auto_increment,
-    RestaurantId MEDIUMINT,
-    Category VARCHAR(30),
-    Name VARCHAR(30),
-    Description VARCHAR(150),
-    Price DECIMAL,
-    CreatedTime TIMESTAMP DEFAULT now(),
-    PRIMARY KEY(MenuItemId),
-    FOREIGN KEY(RestaurantId) REFERENCES Restaurant(RestaurantId)
-);
-
-CREATE TABLE IF NOT EXISTS MenuItemOption(
-    MenuItemOptionId MEDIUMINT not null auto_increment,
-    MenuItemId MEDIUMINT,
-    Name VARCHAR(30),
-
-    PRIMARY KEY(MenuItemOptionId),
-    FOREIGN KEY(MenuItemId) REFERENCES MenuItem(MenuItemId)
-);
-
-CREATE TABLE IF NOT EXISTS MenuItemOptionValue(
-    MenuItemOptionValueId MEDIUMINT not null auto_increment,
-    MenuItemOptionId MEDIUMINT,
-    Name VARCHAR(30),   
-
-    PRIMARY KEY(MenuItemOptionValueId),
-    FOREIGN KEY(MenuItemOptionId) REFERENCES MenuItemOption(MenuItemOptionId)
-);
-
+--must be run after DBTableScript.sql
+--restaurants
+--
 INSERT INTO Restaurant (Name, Description, CountryCode, Address, CreatedTime)
 VALUES ('felipes fruit shop', 'A shop that sells fruit. Apples, bananas and more!', 'CNTRY/NZ', '90 Symonds Street, Auckland CBD, Auckland 1010, New Zealand', CURRENT_TIMESTAMP);
 
@@ -55,6 +10,8 @@ VALUES ('isaacs icecream store	', 'A shop that sells icecream. Sorbets and icecr
 INSERT INTO Restaurant (Name, Description, CountryCode, Address, CreatedTime)
 VALUES ('andys apple shop', 'Andys apples are pretty good! Grannysmith apples from New Zealand', 'CNTRY/NZ', '20 Symonds Street, Auckland CBD, Auckland 1010, New Zealand', CURRENT_TIMESTAMP);
 
+--menu items
+--
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedTime)
 VALUES (1, 'Fruit', 'Apple', 'A crispy fresh granny smith apple', 1.54, CURRENT_TIMESTAMP);
 
@@ -76,9 +33,14 @@ VALUES (1, 'Drink', 'Water', 'Simply water', 7.01, CURRENT_TIMESTAMP);
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedTime)
 VALUES (1, 'Meal', 'Apple Crumble', 'Apple crumble straight from the oven', 1.54, CURRENT_TIMESTAMP);
 
+--menu item options
+--
+
 INSERT INTO MenuItemOption (MenuItemId, Name)
 VALUES (2, 'Size');
 
+--menu item option values
+--
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name)
 VALUES (1, 'Small');
 
