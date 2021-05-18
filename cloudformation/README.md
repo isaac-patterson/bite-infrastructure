@@ -13,7 +13,9 @@ Deploys the differences between local root-stack.yaml and the latest deployed ro
 ```aws cloudformation package --template-file root-stack.yaml --output-template packaged.yaml --s3-bucket nested-stack-bucket2```
 
 2. Deploy to ```dev```, ```stage``` or ```prod```:
-```aws cloudformation deploy --region us-east-1 --template-file packaged.yaml --stack-name rootStack --parameter-overrides Stage=<STAGE_NAME>```
+```aws cloudformation deploy --region us-east-1 --template-file packaged.yaml --stack-name rootStack --parameter-overrides Stage=<STAGE_NAME> --capabilities CAPABILITY_NAMED_IAM```
+
+```--capabilities CAPABILITY_NAMED_IAM``` allows cloudformation to name iam stuff
 
 
 # First time setup docs

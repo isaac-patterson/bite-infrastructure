@@ -32,6 +32,8 @@ Parameters:
     Type: String
   UserBFFTargetGroup:
     Type: String
+  ExternalUrl:
+    Type: String
 
 Resources:
   #defines long running tasks of the same task definition
@@ -283,19 +285,12 @@ Outputs:
   HealthCheckUrl:
     Description: Healthcheck URL
     Value: 
-       Fn::Join:
-        - ''
-        - - Fn::ImportValue:
-              !Join [':', [!Ref 'StackName', 'ExternalUrl']] 
-          - '/api/values'
+       !Join ['', [!Ref ExternalUrl, '/api/values']]
   WebApiUrl:
     Description: WebApi URL
-    Value: 
-       Fn::Join:
-        - ''
-        - - Fn::ImportValue:
-              !Join [':', [!Ref 'StackName', 'ExternalUrl']] 
-          - '/api/'
+    Value:
+      !Join ['', [!Ref ExternalUrl, '/api/']]
+
   CodeBuildName:
     Description: The name of the CodeBuild.
     Value: !Ref 'CodeBuildProject'    

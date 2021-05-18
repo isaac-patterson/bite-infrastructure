@@ -7,11 +7,11 @@ Resources:
   UserWebAppStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: base-website-stack.yaml
+      TemplateURL: generic-website-stack.yaml
       Parameters:
         StackName: user-webapp
         Stage: !Ref Stage
-        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/7cf23892-5f66-4de2-b3b1-e27ff89c08bd #cert for veni.buzz
+        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/a6f96f59-91f2-43a9-9204-72e2fb25cb26 #cert for veni.buzz
         S3BucketName: user-webapp
         Domain: veni.buzz
         Route53Domain: veni.buzz.
@@ -20,11 +20,11 @@ Resources:
   RetailWebAppStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: base-website-stack.yaml
+      TemplateURL: generic-website-stack.yaml
       Parameters:
         StackName: retail-webapp
         Stage: !Ref Stage
-        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/f73e7b8a-8b5b-4b4f-92f6-02776317d04c #cert for veni.work
+        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/c5c11580-5bc8-4736-8efe-97e7ccfd397b #cert for veni.work
         S3BucketName: retail-webapp
         Domain: veni.work
         Route53Domain: veni.work.
@@ -79,3 +79,4 @@ Resources:
         ClusterName: PublicSubnetStack.Outputs.ClusterName
         ECSSecurityGroup: PublicSubnetStack.Outputs.ECSSecurityGroup
         UserBFFTargetGroup: PublicSubnetStack.Outputs.UserBFFTargetGroup
+        ExternalUrl: PublicSubnetStack.Outputs.ExternalUrl

@@ -11,7 +11,7 @@ Resources:
         StackName: user-webapp
         Stage:
           Ref: Stage
-        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/8e4400a9-79a4-44cd-8793-d1f681da305c
+        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/a6f96f59-91f2-43a9-9204-72e2fb25cb26
         S3BucketName: user-webapp
         Domain: veni.buzz
         Route53Domain: veni.buzz.
@@ -24,7 +24,7 @@ Resources:
         StackName: retail-webapp
         Stage:
           Ref: Stage
-        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/f385d431-4fdc-4986-a62f-746fc47f9b95
+        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/c5c11580-5bc8-4736-8efe-97e7ccfd397b
         S3BucketName: retail-webapp
         Domain: veni.work
         Route53Domain: veni.work.
@@ -96,7 +96,7 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/1066de99fb91fa43d7bb28dc50b3efad.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/cdfa93e8962676c47d96f8945a6c4961.template
       Parameters:
         Stage:
           Ref: Stage
@@ -112,3 +112,4 @@ Resources:
         ClusterName: PublicSubnetStack.Outputs.ClusterName
         ECSSecurityGroup: PublicSubnetStack.Outputs.ECSSecurityGroup
         UserBFFTargetGroup: PublicSubnetStack.Outputs.UserBFFTargetGroup
+        ExternalUrl: PublicSubnetStack.Outputs.ExternalUrl
