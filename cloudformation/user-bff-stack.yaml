@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Deploy a .NET WecApi on AWS Fargate that talks to Aurora, hosted in a private subnet/FARGATE accessible via a public load balancer.
+Description: .NET WebApi AWS Fargate in ECS Service / ECS Task definition / CodeBuild / CodeDeploy
 Mappings:  
   AWSRegionArch2AMI:
     us-east-1:
@@ -22,38 +22,40 @@ Parameters:
     Type: String
   ECRRepository:
     Type: String
-  ClusterName:
+  ECSCluster:
     Type: String
   ECSSecurityGroup:
     Type: String
-  PublicSubnet1:
+  PrivateSubnet1:
     Type: String
-  PublicSubnet2:
+  PrivateSubnet2:
     Type: String
   UserBFFTargetGroup:
     Type: String
   ExternalUrl:
     Type: String
+  ECRURL:
+    Type: String
 
 Resources:
   #defines long running tasks of the same task definition
   ECSService:
+    DependsOn: ECSTaskDefinition
     Type: AWS::ECS::Service
     Properties:
       ServiceName: !Sub ${StackName}-user-bff-service
-      Cluster: !Ref ClusterName
+      Cluster: !Ref ECSCluster
       LaunchType: FARGATE
-      DesiredCount: 1
+      DesiredCount: 2
       NetworkConfiguration:
         AwsvpcConfiguration:
-          AssignPublicIp: ENABLED
           SecurityGroups:
             - !Ref ECSSecurityGroup
           Subnets:
-            - !Ref PublicSubnet1
-            - !Ref PublicSubnet2
+            - !Ref PrivateSubnet1
+            - !Ref PrivateSubnet1
 
-      TaskDefinition: ECSTaskDefinition
+      TaskDefinition: !Ref ECSTaskDefinition
       LoadBalancers:
         - ContainerName: web
           ContainerPort: 80
@@ -184,15 +186,7 @@ Resources:
         EnvironmentVariables:
             - Name: REPOSITORY_URI
               Type: PLAINTEXT
-              Value: 
-                Fn::Join:
-                  - ''
-                  - - Ref: AWS::AccountId
-                    - '.dkr.ecr.'
-                    - Ref: AWS::Region
-                    - '.amazonaws.com/'
-                    - ecr-user-bff/' 
-                    #clean up into parameter, along with reference in misc-infra-stack and public subnet stack
+              Value: !Join ['',[!Ref ECRURL, !Ref StackName, '-ecr/']]
             - Name: AWS_DEFAULT_REGION
               Type: PLAINTEXT
               Value: 

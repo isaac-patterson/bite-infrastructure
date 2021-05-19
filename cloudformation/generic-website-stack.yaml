@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: S3 / Route53 / CloudFront CloudFormation configuration
+Description: S3 / Route53 / CloudFront configuration for https website
 
 Parameters:
   StackName:
@@ -15,7 +15,7 @@ Parameters:
     Type: String
   Domain:
     Type: String
-  Route53Domain:
+  Route53HostedZoneName:
     Type: String
   CloudFrontPriceClass: 
     Type: String
@@ -112,8 +112,8 @@ Resources:
         EvaluateTargetHealth: False
         HostedZoneId: !Ref AwsRoute53CloudFrontHostedZoneId
       Comment: !Join ["", [!Ref StackName, " ", !Ref Stage, " Route"]]
-      HostedZoneName: !Join ["", [!Ref StackName, " ",!Ref Stage, " Route53HostedZoneName"]]
-      Name: !Ref Stage
+      HostedZoneName: !Ref Route53HostedZoneName
+      Name: !Ref Domain
       Type: A
 
 Outputs:

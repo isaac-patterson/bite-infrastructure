@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Resources in the public subnet 
+Description: Resources in the public subnet NAT / ECS Cluster / Load Ballancer
 
 Parameters:
   ECSDeployEnv: #not used at the moment as havnt set up dev environments
@@ -91,12 +91,6 @@ Resources:
       GroupName: !Sub ${StackName}-ecs-app-sg
       GroupDescription: Access to the Fargate containers
       VpcId: !Ref ApiVPC
-      SecurityGroupIngress:
-      # Allow access to ALB from anywhere on the internet
-      - CidrIp: 0.0.0.0/0
-        IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
   
   #this ingress allows inbound traffic to ECS services from all private IP addresses of the network interfaces assosiated with the source security group
   #in this case from the public load ballancer
@@ -158,8 +152,8 @@ Resources:
           SslPolicy: "ELBSecurityPolicy-2016-08"
           Certificates: 
             - 
-              CertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/8e4400a9-79a4-44cd-8793-d1f681da305c
-              
+              CertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/a6f96f59-91f2-43a9-9204-72e2fb25cb26
+
           DefaultActions: 
             - 
               Order: 1
@@ -224,7 +218,7 @@ Resources:
           VpcId: !Ref ApiVPC
           Name: !Sub ${StackName}-retailbff-tgt-grp
           HealthCheckEnabled: true
-  #If this listener rule is met, traffic is fowarded to the RetailBFFTargetGroup
+  #If this listener rule is met, traffic is fowarded to the UserBFFTargetGroup
   UserBFFListenerRule:
       Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
       Properties:
@@ -239,14 +233,6 @@ Resources:
             - 
               Type: "forward"
               TargetGroupArn: !Ref UserBFFTargetGroup
-              Order: 1
-              ForwardConfig: 
-                  TargetGroups: 
-                    - 
-                      TargetGroupArn: !Ref UserBFFTargetGroup
-                      Weight: 1
-                  TargetGroupStickinessConfig: 
-                      Enabled: false
 
   #If this listener rule is met, traffic is fowarded to the RetailBFFTargetGroup
   RetailBFFListenerRule:
@@ -263,46 +249,38 @@ Resources:
             - 
               Type: "forward"
               TargetGroupArn: !Ref RetailBFFTargetGroup
-              Order: 1
-              ForwardConfig: 
-                  TargetGroups: 
-                    - 
-                      TargetGroupArn: !Ref RetailBFFTargetGroup
-                      Weight: 1
-                  TargetGroupStickinessConfig: 
-                      Enabled: false
 
-Outputs:  
-  ClusterName:
+Outputs:
+  ECSCluster:
     Description: The name of the ECS cluster
-    Value: !Ref 'ECSCluster'
+    Value: !Ref ECSCluster
     Export:
-      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ClusterName' ] ]       
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSCluster' ]]       
   ExternalUrl:
     Description: The url of the external load balancer
     Value: !Join ['', ['http://', !GetAtt 'PublicLoadBalancer.DNSName']]
     Export:
-      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ExternalUrl' ] ]
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'ExternalUrl' ] ]
   ECSSecurityGroup:
     Description: ECSSecurityGroup for the loadbalancer
     Value: !Ref 'ECSSecurityGroup'
     Export:
-      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ECSSecurityGroup' ] ]
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSSecurityGroup' ] ]
   HTTPSListener:
     Description: The ARN of the public load balancer's Listener
     Value: !Ref HTTPSListener
     Export:
-      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'HTTPSListener' ] ]      
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'HTTPSListener' ] ]      
   UserBFFTargetGroup:
       Description: The created UserBFFTargetGroup
       Value: !Ref UserBFFTargetGroup
       Export:
-        Name: !Join [ ':', [ !Ref 'AWS::StackName', 'UserBFFTargetGroup' ] ]
+        Name: !Join [':', [ !Ref 'AWS::StackName', 'UserBFFTargetGroup' ] ]
   RetailBFFTargetGroup:
       Description: The created TargetGroup 2
       Value: !Ref RetailBFFTargetGroup
       Export:
-        Name: !Join [ ':', [ !Ref 'AWS::StackName', 'RetailBFFTargetGroup' ] ]
+        Name: !Join [':', [ !Ref 'AWS::StackName', 'RetailBFFTargetGroup' ] ]
   PLBSecurityGroup:
       Description: the securty group for the ALB
       Value: !Ref PLBSecurityGroup

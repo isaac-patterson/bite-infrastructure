@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Description: Root/Parent stack for veni infrastructure
 Parameters:
   Stage:
     Type: String
@@ -6,7 +7,7 @@ Resources:
   UserWebAppStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/3666b19dc2cd9ab682b97a160e71c4d7.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/671e7d5a4a2ecdf3df6ab453cf92267c.template
       Parameters:
         StackName: user-webapp
         Stage:
@@ -14,12 +15,12 @@ Resources:
         AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/a6f96f59-91f2-43a9-9204-72e2fb25cb26
         S3BucketName: user-webapp
         Domain: veni.buzz
-        Route53Domain: veni.buzz.
+        Route53HostedZoneName: veni.buzz.
         CloudFrontPriceClass: PriceClass_All
   RetailWebAppStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/3666b19dc2cd9ab682b97a160e71c4d7.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/671e7d5a4a2ecdf3df6ab453cf92267c.template
       Parameters:
         StackName: retail-webapp
         Stage:
@@ -27,12 +28,12 @@ Resources:
         AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/c5c11580-5bc8-4736-8efe-97e7ccfd397b
         S3BucketName: retail-webapp
         Domain: veni.work
-        Route53Domain: veni.work.
+        Route53HostedZoneName: veni.work.
         CloudFrontPriceClass: PriceClass_All
   MiscStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/0c166b21fd74850388047b4ed4ab5356.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/82a8a569b6f3dcea8efa4802908ef37f.template
       Parameters:
         Stage:
           Ref: Stage
@@ -46,7 +47,7 @@ Resources:
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/48958779d697fcd00014defd423103b7.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/b7f1fc9eeb59fa7f983556cae0282412.template
       Parameters:
         Stage:
           Ref: Stage
@@ -96,7 +97,7 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/cdfa93e8962676c47d96f8945a6c4961.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/ec77441fc584c15f3e9ff13060eec001.template
       Parameters:
         Stage:
           Ref: Stage
@@ -108,8 +109,27 @@ Resources:
           Fn::GetAtt:
           - VPCStack
           - Outputs.PublicSubnet2
-        ECRRepository: MiscStack.Outputs.ECRRepository
-        ClusterName: PublicSubnetStack.Outputs.ClusterName
-        ECSSecurityGroup: PublicSubnetStack.Outputs.ECSSecurityGroup
-        UserBFFTargetGroup: PublicSubnetStack.Outputs.UserBFFTargetGroup
-        ExternalUrl: PublicSubnetStack.Outputs.ExternalUrl
+        ECRRepository:
+          Fn::GetAtt:
+          - MiscStack
+          - Outputs.ECRRepository
+        ECRURL:
+          Fn::GetAtt:
+          - MiscStack
+          - Outputs.ECRURL
+        ECSCluster:
+          Fn::GetAtt:
+          - PublicSubnetStack
+          - Outputs.ECSCluster
+        ECSSecurityGroup:
+          Fn::GetAtt:
+          - PublicSubnetStack
+          - Outputs.ECSSecurityGroup
+        UserBFFTargetGroup:
+          Fn::GetAtt:
+          - PublicSubnetStack
+          - Outputs.UserBFFTargetGroup
+        ExternalUrl:
+          Fn::GetAtt:
+          - PublicSubnetStack
+          - Outputs.ExternalUrl

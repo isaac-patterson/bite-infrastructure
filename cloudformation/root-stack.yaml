@@ -1,4 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Description: Root/Parent stack for veni infrastructure
+
 Parameters:
   Stage:
     Type: String
@@ -14,7 +16,7 @@ Resources:
         AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/a6f96f59-91f2-43a9-9204-72e2fb25cb26 #cert for veni.buzz
         S3BucketName: user-webapp
         Domain: veni.buzz
-        Route53Domain: veni.buzz.
+        Route53HostedZoneName: veni.buzz.
         CloudFrontPriceClass: PriceClass_All
   
   RetailWebAppStack:
@@ -27,7 +29,7 @@ Resources:
         AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/c5c11580-5bc8-4736-8efe-97e7ccfd397b #cert for veni.work
         S3BucketName: retail-webapp
         Domain: veni.work
-        Route53Domain: veni.work.
+        Route53HostedZoneName: veni.work.
         CloudFrontPriceClass: PriceClass_All
 
   MiscStack:
@@ -73,10 +75,11 @@ Resources:
       TemplateURL: user-bff-stack.yaml
       Parameters:
         Stage: !Ref Stage
-        PublicSubnet1: !GetAtt VPCStack.Outputs.PublicSubnet1
-        PublicSubnet2: !GetAtt VPCStack.Outputs.PublicSubnet2
-        ECRRepository: MiscStack.Outputs.ECRRepository
-        ClusterName: PublicSubnetStack.Outputs.ClusterName
-        ECSSecurityGroup: PublicSubnetStack.Outputs.ECSSecurityGroup
-        UserBFFTargetGroup: PublicSubnetStack.Outputs.UserBFFTargetGroup
-        ExternalUrl: PublicSubnetStack.Outputs.ExternalUrl
+        PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
+        PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
+        ECRRepository: !GetAtt MiscStack.Outputs.ECRRepository
+        ECRURL: !GetAtt MiscStack.Outputs.ECRURL
+        ECSCluster: !GetAtt PublicSubnetStack.Outputs.ECSCluster
+        ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
+        UserBFFTargetGroup: !GetAtt PublicSubnetStack.Outputs.UserBFFTargetGroup
+        ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl

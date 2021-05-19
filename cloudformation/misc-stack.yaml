@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Outer private & public subnet resources for veni
+Description: ECR and other misc resources 
 
 Parameters:
   StackName:
@@ -14,7 +14,7 @@ Resources:
   ECRRepository: 
     Type: AWS::ECR::Repository
     Properties: 
-      RepositoryName: !Sub ${StackName}-ecr
+      RepositoryName: veni-ecr
       RepositoryPolicyText: 
         Version: "2012-10-17"
         Statement: 
@@ -28,5 +28,9 @@ Outputs:
     Description: Private subnet routetable one
     Value: !Ref 'ECRRepository'
     Export:
-      Name: !Join [ '-', [ !Ref 'AWS::StackName', 'ecr' ] ]
- 
+      Name: !Join [ '-', [ !Ref 'AWS::StackName', 'ECRRepository'] ]
+
+  ECRURL:
+    Description: URL to ecr repo
+    Value:                 
+      !Join ['', [!Ref AWS::AccountId, '.dkr.ecr.', !Ref AWS::Region, '.amazonaws.com/veni-ecr/']]
