@@ -106,15 +106,14 @@ Resources:
       ToPort: 65535
       SourceSecurityGroupId: !Ref 'PLBSecurityGroup'
 
-  #ALB
-  #acts as a firewall for the public load ballancer instances, controls both inbound and outbound traffic
+  #Acts as a firewall for the PLB, controls both inbound traffic
   PLBSecurityGroup:
       Type: "AWS::EC2::SecurityGroup"
       Properties:
           GroupDescription: Access to the public facing load balancer
           GroupName: !Sub ${StackName}-elb-sg
           VpcId: !Ref ApiVPC
-          #adds inbound rules to security group
+          #allows any access from internet on ports 80 or 443, all port 80 requests redirect to 443
           SecurityGroupIngress: 
             - 
               CidrIp: "0.0.0.0/0"
@@ -142,7 +141,7 @@ Resources:
           IpAddressType: "ipv4"
 
   # A listener checks for connection requests using a specified protocol and port. 
-  #The rules that you define for a listener determine how the load balancer routes requests to its registered targets.
+  # The rules that you define for a listener determine how the load balancer routes requests to its registered targets.
   HTTPSListener:
       Type: "AWS::ElasticLoadBalancingV2::Listener"
       Properties:
@@ -153,12 +152,15 @@ Resources:
           Certificates: 
             - 
               CertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/a6f96f59-91f2-43a9-9204-72e2fb25cb26
-
+          
+          # Returns a 400 if no rules are met
           DefaultActions: 
             - 
-              Order: 1
-              TargetGroupArn: !Ref UserBFFTargetGroup
-              Type: "forward"
+              Type: "fixed-response"
+              FixedResponseConfig: 
+                ContentType: String
+                MessageBody: So close!
+                StatusCode: 400
 
   #redirects all http traffic to https listener
   HTTPListener:
@@ -178,77 +180,6 @@ Resources:
                   Query: "#{query}"
                   StatusCode: "HTTP_301"
               Type: "redirect"
-
-  #This target group routes requests to the UserBFF fargate instance
-  UserBFFTargetGroup:
-      Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
-      Properties:
-          HealthCheckIntervalSeconds: 10
-          HealthCheckPath: "/api/values"
-          Port: 80
-          Protocol: "HTTP"
-          HealthCheckPort: "traffic-port"
-          HealthCheckProtocol: "HTTP"
-          HealthCheckTimeoutSeconds: 5
-          UnhealthyThresholdCount: 2
-          TargetType: ip #maybe change this to 'instance'?
-          Matcher: 
-              HttpCode: "200"
-          HealthyThresholdCount: 5
-          VpcId: !Ref ApiVPC
-          Name: !Sub ${StackName}-userbff-tgt-grp
-          HealthCheckEnabled: true
-
-  #This target group routes requests to the RetailBFF fargate instance
-  RetailBFFTargetGroup:
-      Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
-      Properties:
-          HealthCheckIntervalSeconds: 10
-          HealthCheckPath: "/api/values"
-          Port: 80
-          Protocol: "HTTP"
-          HealthCheckPort: "traffic-port"
-          HealthCheckProtocol: "HTTP"
-          HealthCheckTimeoutSeconds: 5
-          UnhealthyThresholdCount: 2
-          TargetType: ip #maybe change this to 'instance'?
-          Matcher: 
-              HttpCode: "200"
-          HealthyThresholdCount: 5
-          VpcId: !Ref ApiVPC
-          Name: !Sub ${StackName}-retailbff-tgt-grp
-          HealthCheckEnabled: true
-  #If this listener rule is met, traffic is fowarded to the UserBFFTargetGroup
-  UserBFFListenerRule:
-      Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
-      Properties:
-          Priority: "1"
-          ListenerArn: !Ref HTTPSListener
-          Conditions: 
-            - 
-              Field: "path-pattern"
-              Values: 
-                - "/user"
-          Actions: 
-            - 
-              Type: "forward"
-              TargetGroupArn: !Ref UserBFFTargetGroup
-
-  #If this listener rule is met, traffic is fowarded to the RetailBFFTargetGroup
-  RetailBFFListenerRule:
-      Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
-      Properties:
-          Priority: "2"
-          ListenerArn: !Ref HTTPSListener
-          Conditions: 
-            - 
-              Field: "path-pattern"
-              Values: 
-                - "/retail"
-          Actions: 
-            - 
-              Type: "forward"
-              TargetGroupArn: !Ref RetailBFFTargetGroup
 
 Outputs:
   ECSCluster:
@@ -271,16 +202,6 @@ Outputs:
     Value: !Ref HTTPSListener
     Export:
       Name: !Join [':', [ !Ref 'AWS::StackName', 'HTTPSListener' ] ]      
-  UserBFFTargetGroup:
-      Description: The created UserBFFTargetGroup
-      Value: !Ref UserBFFTargetGroup
-      Export:
-        Name: !Join [':', [ !Ref 'AWS::StackName', 'UserBFFTargetGroup' ] ]
-  RetailBFFTargetGroup:
-      Description: The created TargetGroup 2
-      Value: !Ref RetailBFFTargetGroup
-      Export:
-        Name: !Join [':', [ !Ref 'AWS::StackName', 'RetailBFFTargetGroup' ] ]
   PLBSecurityGroup:
       Description: the securty group for the ALB
       Value: !Ref PLBSecurityGroup

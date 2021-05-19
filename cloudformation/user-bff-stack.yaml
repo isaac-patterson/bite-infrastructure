@@ -36,12 +36,22 @@ Parameters:
     Type: String
   ECRURL:
     Type: String
+  HTTPSListener:
+    Type: String
+  ContainerPort:
+    Type: String
+    Default: 80
+  ServiceName:
+    Type: String
+    Default: user-bff
 
 Resources:
-  #defines long running tasks of the same task definition
+  #Defines long running tasks of the same task definition
   ECSService:
-    DependsOn: ECSTaskDefinition
     Type: AWS::ECS::Service
+    DependsOn: 
+      - LoadBalancerRule
+      - ECSTaskDefinition
     Properties:
       ServiceName: !Sub ${StackName}-user-bff-service
       Cluster: !Ref ECSCluster
@@ -53,13 +63,13 @@ Resources:
             - !Ref ECSSecurityGroup
           Subnets:
             - !Ref PrivateSubnet1
-            - !Ref PrivateSubnet1
+            - !Ref PrivateSubnet2
 
       TaskDefinition: !Ref ECSTaskDefinition
       LoadBalancers:
-        - ContainerName: web
-          ContainerPort: 80
-          TargetGroupArn: !Ref UserBFFTargetGroup
+        - ContainerName: !Ref ServiceName
+          ContainerPort: !Ref ContainerPort
+          TargetGroupArn: !Ref TargetGroup
   
   #user-bff task definition
   ECSTaskDefinition:
@@ -75,7 +85,7 @@ Resources:
         - FARGATE
       ContainerDefinitions:
         -
-          Name: web
+          Name: !Ref ServiceName
           LogConfiguration:
             LogDriver:  awslogs
             Options:
@@ -94,16 +104,51 @@ Resources:
           Cpu: 256
           Memory: 256
           PortMappings:
-            - ContainerPort: 80
+            - ContainerPort: !Ref ContainerPort
               Protocol: tcp
           Command:
             - "dotnet"
             - "user-bff.dll"                       
-  ECSLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties: 
-      LogGroupName: !Sub ${StackName}-awslogs
-      RetentionInDays: 30
+
+  #Target group distributes traffic from the PLB to the fargate instance
+  TargetGroup:
+      Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+      Properties:
+          HealthCheckIntervalSeconds: 10
+          HealthCheckPath: "/api/values"
+          HealthCheckPort: "traffic-port"
+          HealthCheckProtocol: "HTTP"
+          HealthCheckTimeoutSeconds: 5
+          HealthyThresholdCount: 5
+          UnhealthyThresholdCount: 2
+          Matcher: #checks for 200 OK for healthcheck
+              HttpCode: "200"
+          Port: !Ref ContainerPort
+          Protocol: "HTTP"
+          TargetType: ip
+          VpcId: !Ref ApiVPC
+          Name: !Sub ${StackName}-userbff-tgt-grp
+  
+  #Adds listener to the PLB
+  #Traffic is fowarded to the TargetGroup if the path matches
+  #TO DO - add an action to the listner rule in order to authenticate users
+  #https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-authenticate-users.html
+  LoadBalancerRule:
+      Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
+      Properties:
+          Priority: "1"
+          ListenerArn: !Ref HTTPSListener
+          Conditions: 
+            - 
+              Field: "path-pattern"
+              Values: 
+                - "/user"
+          Actions: 
+            - 
+              Type: "forward"
+              TargetGroupArn: !Ref TargetGroup
+
+  #ECS roles & log group
   ECSRole:
     Type: AWS::IAM::Role
     Properties:
@@ -143,7 +188,6 @@ Resources:
                   - 'elasticloadbalancing:RegisterInstancesWithLoadBalancer'
                   - 'elasticloadbalancing:RegisterTargets'
                 Resource: '*'
-  # ECS Task Role
   ECSTaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -168,7 +212,12 @@ Resources:
                 - 'logs:CreateLogStream'
                 - 'logs:PutLogEvents'
               Resource: '*'
-   
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: !Sub ${StackName}-awslogs
+      RetentionInDays: 30
+  
   #Code Build
   CodeBuildProject:
     Type: AWS::CodeBuild::Project

@@ -47,7 +47,7 @@ Resources:
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/b7f1fc9eeb59fa7f983556cae0282412.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/7efe168b722acb992c3d8a1551f6b412.template
       Parameters:
         Stage:
           Ref: Stage
@@ -97,18 +97,18 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/ec77441fc584c15f3e9ff13060eec001.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/41382aac3413908e627f55dfa834c867.template
       Parameters:
         Stage:
           Ref: Stage
-        PublicSubnet1:
+        PrivateSubnet1:
           Fn::GetAtt:
           - VPCStack
-          - Outputs.PublicSubnet1
-        PublicSubnet2:
+          - Outputs.PrivateSubnet1
+        PrivateSubnet2:
           Fn::GetAtt:
           - VPCStack
-          - Outputs.PublicSubnet2
+          - Outputs.PrivateSubnet2
         ECRRepository:
           Fn::GetAtt:
           - MiscStack
@@ -133,3 +133,7 @@ Resources:
           Fn::GetAtt:
           - PublicSubnetStack
           - Outputs.ExternalUrl
+        HTTPSListener:
+          Fn::GetAtt:
+          - PublicSubnetStack
+          - Outputs.HTTPSListener

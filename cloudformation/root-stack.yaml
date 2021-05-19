@@ -83,3 +83,4 @@ Resources:
         ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
         UserBFFTargetGroup: !GetAtt PublicSubnetStack.Outputs.UserBFFTargetGroup
         ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
+        HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
