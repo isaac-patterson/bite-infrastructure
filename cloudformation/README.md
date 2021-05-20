@@ -23,6 +23,7 @@ Deploys the differences between local root-stack.yaml and the latest deployed ro
 pre-deployment
 ---------------
  - Each website defined in root template needs an acm certificate and route 53 hosted zone before running
+ - Change the ```DesiredCount``` of all ecs services to ```0``` as otherwise it'll pull from an empty ecr repo and fail deployment
 
 Deploy aws infra (see above)
 ----------------------------
@@ -30,6 +31,7 @@ Deploy aws infra (see above)
 post-deployment
 ---------------
  - Run script DBTableSetup.sql via AWS RDS
- - Run script PopulateInitialData.sql
+ - Run script PopulateInitialData.sql via AWS RDS
+ - Change the ```DesiredCount``` of all ecs services to ```2```
  - Run canary release (merge to master webhook triggers aws codebuild)
 

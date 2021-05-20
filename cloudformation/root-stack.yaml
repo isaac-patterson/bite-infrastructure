@@ -32,13 +32,6 @@ Resources:
         Route53HostedZoneName: veni.work.
         CloudFrontPriceClass: PriceClass_All
 
-  MiscStack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: misc-stack.yaml
-      Parameters:
-        Stage: !Ref Stage
-
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -75,12 +68,10 @@ Resources:
       TemplateURL: user-bff-stack.yaml
       Parameters:
         Stage: !Ref Stage
+        ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
         PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
         PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
-        ECRRepository: !GetAtt MiscStack.Outputs.ECRRepository
-        ECRURL: !GetAtt MiscStack.Outputs.ECRURL
         ECSCluster: !GetAtt PublicSubnetStack.Outputs.ECSCluster
         ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
-        UserBFFTargetGroup: !GetAtt PublicSubnetStack.Outputs.UserBFFTargetGroup
         ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
         HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener

@@ -30,13 +30,6 @@ Resources:
         Domain: veni.work
         Route53HostedZoneName: veni.work.
         CloudFrontPriceClass: PriceClass_All
-  MiscStack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/82a8a569b6f3dcea8efa4802908ef37f.template
-      Parameters:
-        Stage:
-          Ref: Stage
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -47,7 +40,7 @@ Resources:
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/7efe168b722acb992c3d8a1551f6b412.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/ca0dbbd6f0c77e82dab4664bd62060fe.template
       Parameters:
         Stage:
           Ref: Stage
@@ -97,10 +90,14 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/41382aac3413908e627f55dfa834c867.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/4bf0c2be9596a3fc6a226c55fa09861b.template
       Parameters:
         Stage:
           Ref: Stage
+        ApiVPC:
+          Fn::GetAtt:
+          - VPCStack
+          - Outputs.ApiVPC
         PrivateSubnet1:
           Fn::GetAtt:
           - VPCStack
@@ -109,14 +106,6 @@ Resources:
           Fn::GetAtt:
           - VPCStack
           - Outputs.PrivateSubnet2
-        ECRRepository:
-          Fn::GetAtt:
-          - MiscStack
-          - Outputs.ECRRepository
-        ECRURL:
-          Fn::GetAtt:
-          - MiscStack
-          - Outputs.ECRURL
         ECSCluster:
           Fn::GetAtt:
           - PublicSubnetStack
@@ -125,10 +114,6 @@ Resources:
           Fn::GetAtt:
           - PublicSubnetStack
           - Outputs.ECSSecurityGroup
-        UserBFFTargetGroup:
-          Fn::GetAtt:
-          - PublicSubnetStack
-          - Outputs.UserBFFTargetGroup
         ExternalUrl:
           Fn::GetAtt:
           - PublicSubnetStack
