@@ -40,7 +40,7 @@ Resources:
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/ca0dbbd6f0c77e82dab4664bd62060fe.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/4f8d1c6f01df9de8cddeae76aec38e06.template
       Parameters:
         Stage:
           Ref: Stage
@@ -90,7 +90,7 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/4bf0c2be9596a3fc6a226c55fa09861b.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/9628593dc034c38806364984756f8c39.template
       Parameters:
         Stage:
           Ref: Stage

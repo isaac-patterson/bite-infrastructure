@@ -15,10 +15,10 @@ Deploys the differences between local root-stack.yaml and the latest deployed ro
 2. Deploy to ```dev```, ```stage``` or ```prod```:
 ```aws cloudformation deploy --region us-east-1 --template-file packaged.yaml --stack-name rootStack  --capabilities CAPABILITY_NAMED_IAM --parameter-overrides Stage=<STAGE_NAME>```
 
-```--capabilities CAPABILITY_NAMED_IAM``` allows cloudformation to name iam stuff
+```--capabilities CAPABILITY_NAMED_IAM``` allows cloudformation to name iam resources
 
 
-# First time setup docs
+# First time setup
 
 pre-deployment
 ---------------
@@ -32,6 +32,6 @@ post-deployment
 ---------------
  - Run script DBTableSetup.sql via AWS RDS
  - Run script PopulateInitialData.sql via AWS RDS
- - Change the ```DesiredCount``` of all ecs services to ```2```
- - Run canary release (merge to master webhook triggers aws codebuild)
+ - Run canary release for user-bff and retail bff
+ - Change the ```DesiredCount``` of all ecs services to ```2``` and then redeploy the stack
 
