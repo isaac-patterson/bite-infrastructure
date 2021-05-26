@@ -75,3 +75,22 @@ Resources:
         ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
         ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
         HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
+
+  # RetailBFFStack:
+  #   Type: AWS::CloudFormation::Stack
+  #   Properties:
+  #     TemplateURL: generic-bff-stack.yaml
+  #     Parameters:
+  #       Stage: !Ref Stage
+  #       ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
+  #       PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
+  #       PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
+  #       ECSCluster: !GetAtt PublicSubnetStack.Outputs.ECSCluster
+  #       ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
+  #       ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
+  #       HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
+  #       StackName: retail-bff-stack
+  #       ContainerPort: 80
+  #       ServiceName: retail-bff
+  #       DllFile: retail-bff.dll
+  #       PathPattern: /retail/*

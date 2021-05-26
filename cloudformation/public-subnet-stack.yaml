@@ -43,37 +43,37 @@ Resources:
   # #internet cannot get through NAT gateway explicitily allowed, mostly used for outbound traffic
   # #can be used for other things aswell: eg.  yum updates, external database connections, wget calls, etc
   # #private subnets connected to natgateway
-  NATGateway1:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId:
-        Fn::GetAtt:
-        - NAT1EIP
-        - AllocationId
-      SubnetId: !Ref PublicSubnet1
-  PrivateSubnetNATGateway1Route:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateSubnet1RouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-        Ref: NATGateway1
+  # NATGateway1:
+  #   Type: AWS::EC2::NatGateway
+  #   Properties:
+  #     AllocationId:
+  #       Fn::GetAtt:
+  #       - NAT1EIP
+  #       - AllocationId
+  #     SubnetId: !Ref PublicSubnet1
+  # PrivateSubnetNATGateway1Route:
+  #   Type: AWS::EC2::Route
+  #   Properties:
+  #     RouteTableId: !Ref PrivateSubnet1RouteTable
+  #     DestinationCidrBlock: 0.0.0.0/0
+  #     NatGatewayId:
+  #       Ref: NATGateway1
   
-  NATGateway2:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId:
-        Fn::GetAtt:
-        - NAT2EIP
-        - AllocationId
-      SubnetId: !Ref PublicSubnet2
-  PrivateSubnetNATGateway2Route:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateSubnet2RouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-        Ref: NATGateway2
+  # NATGateway2:
+  #   Type: AWS::EC2::NatGateway
+  #   Properties:
+  #     AllocationId:
+  #       Fn::GetAtt:
+  #       - NAT2EIP
+  #       - AllocationId
+  #     SubnetId: !Ref PublicSubnet2
+  # PrivateSubnetNATGateway2Route:
+  #   Type: AWS::EC2::Route
+  #   Properties:
+  #     RouteTableId: !Ref PrivateSubnet2RouteTable
+  #     DestinationCidrBlock: 0.0.0.0/0
+  #     NatGatewayId:
+  #       Ref: NATGateway2
 
   #ECS Cluster
   ECSCluster:
@@ -152,7 +152,7 @@ Resources:
           SslPolicy: "ELBSecurityPolicy-2016-08"
           Certificates: 
             - 
-              CertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/a6f96f59-91f2-43a9-9204-72e2fb25cb26
+              CertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/c5c11580-5bc8-4736-8efe-97e7ccfd397b
           
           # Returns a 400 if no rules are met
           DefaultActions: 

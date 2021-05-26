@@ -35,3 +35,6 @@ post-deployment
  - Run canary release for user-bff and retail bff
  - Change the ```DesiredCount``` of all ecs services to ```2``` and then redeploy the stack
 
+# Notes
+
+Never manually delete resources through the aws ui, always comment out relevant code and then update the stack. Otherwise youll have to redeploy the whole stack

@@ -162,6 +162,7 @@ Resources:
         Ref: PrivateSubnet2
       RouteTableId:
         Ref: PrivateSubnet2RouteTable
+  #edge assosiation (connected to internet gateway). Allows incoming traffic to subnet
   PublicSubnetRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:

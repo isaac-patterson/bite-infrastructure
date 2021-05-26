@@ -5,7 +5,6 @@ Parameters:
   StackName:
     Description: Service stack for net-core-task
     Type: String
-    Default: user-bff-stack
   Stage:
     Type: String
   ApiVPC:
@@ -24,10 +23,10 @@ Parameters:
     Type: String
   ContainerPort:
     Type: String
-    Default: 443
   ServiceName:
     Type: String
-    Default: user-bff
+  DllFile:
+    Type: String
 
 Resources:
   #Service task definition
@@ -50,8 +49,8 @@ Resources:
             Options:
               awslogs-group: !Ref 'ECSLogGroup'
               awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: !Sub ${StackName}-logs
-          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StackName}-ecr:latest
+              awslogs-stream-prefix: !Sub ${ServiceName}-logs
+          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ServiceName}-ecr:latest
           Cpu: 256
           Memory: 256
           PortMappings:
@@ -59,7 +58,7 @@ Resources:
               Protocol: tcp
           Command:
             - "dotnet"
-            - "user-bff.dll"                       
+            - !Ref DllFile                       
 
   #Defines long running tasks of the same task definition
   ECSService:
@@ -67,7 +66,7 @@ Resources:
     DependsOn: 
       - LoadBalancerRule
     Properties:
-      ServiceName: !Sub ${StackName}-user-bff-service
+      ServiceName: !Sub ${ServiceName}-service
       Cluster: !Ref ECSCluster
       LaunchType: FARGATE
       DesiredCount: 0 #place to 0 if there is no image in the ecr repository yet
@@ -103,7 +102,7 @@ Resources:
           Protocol: "HTTP"
           TargetType: ip
           VpcId: !Ref ApiVPC
-          Name: userbff-tgt-grp2
+          Name: !Sub ${ServiceName}-tgt-grp
   
   #Adds listener to the PLB
   #Traffic is fowarded to the TargetGroup if the path matches
@@ -118,7 +117,7 @@ Resources:
             - 
               Field: "path-pattern"
               Values: 
-                - "/user/*"
+                - !Ref PathPattern
           Actions: 
             - 
               Type: "forward"
@@ -128,7 +127,7 @@ Resources:
   ECSRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${StackName}-ecs-role
+      RoleName: !Sub ${ServiceName}-ecs-role
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonRDSFullAccess 
         - arn:aws:iam::aws:policy/AmazonSSMFullAccess 
@@ -167,7 +166,7 @@ Resources:
   ECSTaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${StackName}-taskexec-role
+      RoleName: !Sub ${ServiceName}-taskexec-role
       AssumeRolePolicyDocument:
         Statement:
         - Effect: Allow
@@ -191,7 +190,7 @@ Resources:
   ECSLogGroup:
     Type: AWS::Logs::LogGroup
     Properties: 
-      LogGroupName: !Sub ${StackName}-awslogs
+      LogGroupName: !Sub ${ServiceName}-awslogs
       RetentionInDays: 30
   
   #Deployment Pipeline
@@ -199,7 +198,7 @@ Resources:
     Type: AWS::ECR::Repository
     DeletionPolicy: Retain
     Properties: 
-      RepositoryName: !Sub ${StackName}-ecr
+      RepositoryName: !Sub ${ServiceName}-ecr
       RepositoryPolicyText: 
         Version: "2012-10-17"
         Statement: 
@@ -215,8 +214,8 @@ Resources:
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: !Sub ${StackName}-user-bff-build
-      Description: user-bff Api application codebuild project.
+      Name: !Sub ${StackName}-${ServiceName}-build
+      Description: !Sub ${ServiceName} codebuild project.
       ServiceRole: !GetAtt CodeBuildRole.Arn
       Artifacts:
         Type: CODEPIPELINE
@@ -228,7 +227,7 @@ Resources:
         EnvironmentVariables:
             - Name: REPOSITORY_URI
               Type: PLAINTEXT
-              Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StackName}-ecr
+              Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ServiceName}-ecr
             - Name: AWS_DEFAULT_REGION
               Type: PLAINTEXT
               Value: !Ref AWS::Region
@@ -331,11 +330,11 @@ Resources:
                 Provider: GitHub
               Configuration:
                 Owner: veni-nz
-                Repo: user-bff
+                Repo: !Ref ServiceName
                 Branch: master
                 OAuthToken: '{{resolve:secretsmanager:GITHUB_ACCESS:SecretString:GITHUB_ACCESS_TOKEN}}'
               OutputArtifacts:
-                - Name: user-bff
+                - Name: dotnet-app
               RunOrder: 1
         - Name: Build
           Actions:
@@ -348,7 +347,7 @@ Resources:
               Configuration:
                 ProjectName: !Ref CodeBuildProject
               InputArtifacts:
-                - Name: user-bff
+                - Name: dotnet-app
               OutputArtifacts:
                 - Name: BuildOutput
 
