@@ -51,10 +51,10 @@ Resources:
         PrivateSubnet2RouteTable: !GetAtt VPCStack.Outputs.PrivateSubnet2RouteTable
         ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
 
-  DBStack:
+  PrivateSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: veni-db-stack.yaml
+      TemplateURL: private-subnet-stack.yaml
       Parameters:
         Stage: !Ref Stage
         PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
@@ -65,32 +65,41 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: user-bff-stack.yaml
+      TemplateURL: generic-bff-stack.yaml
       Parameters:
         Stage: !Ref Stage
         ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
         PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
         PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
-        ECSCluster: !GetAtt PublicSubnetStack.Outputs.ECSCluster
+        ECSCluster: !GetAtt PrivateSubnetStack.Outputs.ECSCluster
         ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
         ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
         HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
+        StackName: user-bff-stack
+        ContainerPort: 443
+        ServiceName: user-bff #matches github repo name
+        DllFile: "user-bff.dll"
+        PathPattern: /user/*
+        DesiredTaskCount: 1 #place to 0 if there is no image in the ecr repository yet
+        ListnerRulePriority: 1
 
-  # RetailBFFStack:
-  #   Type: AWS::CloudFormation::Stack
-  #   Properties:
-  #     TemplateURL: generic-bff-stack.yaml
-  #     Parameters:
-  #       Stage: !Ref Stage
-  #       ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
-  #       PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
-  #       PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
-  #       ECSCluster: !GetAtt PublicSubnetStack.Outputs.ECSCluster
-  #       ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
-  #       ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
-  #       HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
-  #       StackName: retail-bff-stack
-  #       ContainerPort: 80
-  #       ServiceName: retail-bff
-  #       DllFile: retail-bff.dll
-  #       PathPattern: /retail/*
+  RetailBFFStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: generic-bff-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+        ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
+        PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
+        PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
+        ECSCluster: !GetAtt PrivateSubnetStack.Outputs.ECSCluster
+        ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
+        ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
+        HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
+        StackName: retail-bff-stack
+        ContainerPort: 444
+        ServiceName: retail-bff #matches github repo name
+        DllFile: "retail-bff.dll"
+        PathPattern: /retail/*
+        DesiredTaskCount: 1 #place to 0 if there is no image in the ecr repository yet
+        ListnerRulePriority: 2

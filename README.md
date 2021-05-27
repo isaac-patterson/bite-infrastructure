@@ -7,8 +7,9 @@ Prereqs:
  * React
  * Visual studio with .net core 3.1
 
+Setup:
 1. Clone all repos
-2. Create A DB via MySQL Workbench called veni on port 3306
+2. Create A DB via MySQL Workbench called bite on port 3306
 3. Run the scripts ```DBTableScript.sql``` and ```PopulateInitialData.sql``` on the local DB
 4. Connect BFF's to local database
     - [user-bff](https://github.com/veni-nz/user-bff/blob/master/Services/DBContext.cs#L15)

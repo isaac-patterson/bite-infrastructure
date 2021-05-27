@@ -28,7 +28,6 @@ Parameters:
     Type: String
 
 Resources:
-  
   # #Specifies an Elastic IP (EIP) address for natgateway
   NAT1EIP:
     Type: AWS::EC2::EIP
@@ -43,48 +42,37 @@ Resources:
   # #internet cannot get through NAT gateway explicitily allowed, mostly used for outbound traffic
   # #can be used for other things aswell: eg.  yum updates, external database connections, wget calls, etc
   # #private subnets connected to natgateway
-  # NATGateway1:
-  #   Type: AWS::EC2::NatGateway
-  #   Properties:
-  #     AllocationId:
-  #       Fn::GetAtt:
-  #       - NAT1EIP
-  #       - AllocationId
-  #     SubnetId: !Ref PublicSubnet1
-  # PrivateSubnetNATGateway1Route:
-  #   Type: AWS::EC2::Route
-  #   Properties:
-  #     RouteTableId: !Ref PrivateSubnet1RouteTable
-  #     DestinationCidrBlock: 0.0.0.0/0
-  #     NatGatewayId:
-  #       Ref: NATGateway1
-  
-  # NATGateway2:
-  #   Type: AWS::EC2::NatGateway
-  #   Properties:
-  #     AllocationId:
-  #       Fn::GetAtt:
-  #       - NAT2EIP
-  #       - AllocationId
-  #     SubnetId: !Ref PublicSubnet2
-  # PrivateSubnetNATGateway2Route:
-  #   Type: AWS::EC2::Route
-  #   Properties:
-  #     RouteTableId: !Ref PrivateSubnet2RouteTable
-  #     DestinationCidrBlock: 0.0.0.0/0
-  #     NatGatewayId:
-  #       Ref: NATGateway2
-
-  #ECS Cluster
-  ECSCluster:
-    Type: AWS::ECS::Cluster
+  NATGateway1:
+    Type: AWS::EC2::NatGateway
     Properties:
-      ClusterName: !Sub ${StackName}-ecs-cluster
-      Tags:
-        - Key: Name
-          Value: !Sub ${StackName} ECS Cluster
-        - Key: Project
-          Value: veni cluster       
+      AllocationId:
+        Fn::GetAtt:
+        - NAT1EIP
+        - AllocationId
+      SubnetId: !Ref PublicSubnet1
+  PrivateSubnetNATGateway1Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateSubnet1RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: NATGateway1
+  
+  NATGateway2:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+        - NAT2EIP
+        - AllocationId
+      SubnetId: !Ref PublicSubnet2
+  PrivateSubnetNATGateway2Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateSubnet2RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: NATGateway2
 
   ECSSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -182,12 +170,7 @@ Resources:
                   StatusCode: "HTTP_301"
               Type: "redirect"
 
-Outputs:
-  ECSCluster:
-    Description: The name of the ECS cluster
-    Value: !Ref ECSCluster
-    Export:
-      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSCluster' ]]       
+Outputs:  
   ExternalUrl:
     Description: The url of the external load balancer
     Value: !Join ['', ['http://', !GetAtt 'PublicLoadBalancer.DNSName']]

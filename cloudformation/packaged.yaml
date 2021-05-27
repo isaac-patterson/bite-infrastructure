@@ -7,7 +7,7 @@ Resources:
   UserWebAppStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/671e7d5a4a2ecdf3df6ab453cf92267c.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/671e7d5a4a2ecdf3df6ab453cf92267c.template
       Parameters:
         StackName: user-webapp
         Stage:
@@ -20,7 +20,7 @@ Resources:
   RetailWebAppStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/671e7d5a4a2ecdf3df6ab453cf92267c.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/671e7d5a4a2ecdf3df6ab453cf92267c.template
       Parameters:
         StackName: retail-webapp
         Stage:
@@ -33,14 +33,14 @@ Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/acea0999250e4f567c23b895c985ed4e.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/acea0999250e4f567c23b895c985ed4e.template
       Parameters:
         Stage:
           Ref: Stage
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/e3189312b0432e296182c6b43ca27cb5.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/0cfedff070853279d1d64f21c26e5e1b.template
       Parameters:
         Stage:
           Ref: Stage
@@ -64,10 +64,10 @@ Resources:
           Fn::GetAtt:
           - VPCStack
           - Outputs.ApiVPC
-  DBStack:
+  PrivateSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/16cd90e9d41fe84847861444657e2ef7.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/e243ff4a6683137c18651371c8922e81.template
       Parameters:
         Stage:
           Ref: Stage
@@ -90,7 +90,7 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/nested-stack-bucket2/52fe940f5e8b9e4ad86f4fc54bec8af7.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/fd628ee28775d7edd427d7d9b43e5712.template
       Parameters:
         Stage:
           Ref: Stage
@@ -108,7 +108,7 @@ Resources:
           - Outputs.PrivateSubnet2
         ECSCluster:
           Fn::GetAtt:
-          - PublicSubnetStack
+          - PrivateSubnetStack
           - Outputs.ECSCluster
         ECSSecurityGroup:
           Fn::GetAtt:
@@ -122,3 +122,52 @@ Resources:
           Fn::GetAtt:
           - PublicSubnetStack
           - Outputs.HTTPSListener
+        StackName: user-bff-stack
+        ContainerPort: 443
+        ServiceName: user-bff
+        DllFile: user-bff.dll
+        PathPattern: /user/*
+        DesiredTaskCount: 1
+        ListnerRulePriority: 1
+  RetailBFFStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/fd628ee28775d7edd427d7d9b43e5712.template
+      Parameters:
+        Stage:
+          Ref: Stage
+        ApiVPC:
+          Fn::GetAtt:
+          - VPCStack
+          - Outputs.ApiVPC
+        PrivateSubnet1:
+          Fn::GetAtt:
+          - VPCStack
+          - Outputs.PrivateSubnet1
+        PrivateSubnet2:
+          Fn::GetAtt:
+          - VPCStack
+          - Outputs.PrivateSubnet2
+        ECSCluster:
+          Fn::GetAtt:
+          - PrivateSubnetStack
+          - Outputs.ECSCluster
+        ECSSecurityGroup:
+          Fn::GetAtt:
+          - PublicSubnetStack
+          - Outputs.ECSSecurityGroup
+        ExternalUrl:
+          Fn::GetAtt:
+          - PublicSubnetStack
+          - Outputs.ExternalUrl
+        HTTPSListener:
+          Fn::GetAtt:
+          - PublicSubnetStack
+          - Outputs.HTTPSListener
+        StackName: retail-bff-stack
+        ContainerPort: 444
+        ServiceName: retail-bff
+        DllFile: retail-bff.dll
+        PathPattern: /retail/*
+        DesiredTaskCount: 1
+        ListnerRulePriority: 2

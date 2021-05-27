@@ -27,6 +27,13 @@ Parameters:
     Type: String
   DllFile:
     Type: String
+  DesiredTaskCount:
+    Type: String
+  PathPattern: 
+    Type: String
+  ListnerRulePriority:
+    Type: String
+
 
 Resources:
   #Service task definition
@@ -49,8 +56,8 @@ Resources:
             Options:
               awslogs-group: !Ref 'ECSLogGroup'
               awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: !Sub ${ServiceName}-logs
-          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ServiceName}-ecr:latest
+              awslogs-stream-prefix: !Sub ${StackName}-logs
+          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StackName}-ecr:latest
           Cpu: 256
           Memory: 256
           PortMappings:
@@ -58,7 +65,7 @@ Resources:
               Protocol: tcp
           Command:
             - "dotnet"
-            - !Ref DllFile                       
+            - !Ref DllFile                   
 
   #Defines long running tasks of the same task definition
   ECSService:
@@ -66,10 +73,10 @@ Resources:
     DependsOn: 
       - LoadBalancerRule
     Properties:
-      ServiceName: !Sub ${ServiceName}-service
+      ServiceName: !Sub ${StackName}-${ServiceName}-service
       Cluster: !Ref ECSCluster
       LaunchType: FARGATE
-      DesiredCount: 0 #place to 0 if there is no image in the ecr repository yet
+      DesiredCount: !Ref DesiredTaskCount 
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: ENABLED
@@ -111,7 +118,7 @@ Resources:
   LoadBalancerRule:
       Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
       Properties:
-          Priority: "1"
+          Priority: !Ref ListnerRulePriority
           ListenerArn: !Ref HTTPSListener
           Conditions: 
             - 
@@ -127,7 +134,7 @@ Resources:
   ECSRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${ServiceName}-ecs-role
+      RoleName: !Sub ${StackName}-ecs-role
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonRDSFullAccess 
         - arn:aws:iam::aws:policy/AmazonSSMFullAccess 
@@ -166,7 +173,7 @@ Resources:
   ECSTaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${ServiceName}-taskexec-role
+      RoleName: !Sub ${StackName}-taskexec-role
       AssumeRolePolicyDocument:
         Statement:
         - Effect: Allow
@@ -190,7 +197,7 @@ Resources:
   ECSLogGroup:
     Type: AWS::Logs::LogGroup
     Properties: 
-      LogGroupName: !Sub ${ServiceName}-awslogs
+      LogGroupName: !Sub ${StackName}-awslogs
       RetentionInDays: 30
   
   #Deployment Pipeline
@@ -198,7 +205,7 @@ Resources:
     Type: AWS::ECR::Repository
     DeletionPolicy: Retain
     Properties: 
-      RepositoryName: !Sub ${ServiceName}-ecr
+      RepositoryName: !Sub ${StackName}-ecr
       RepositoryPolicyText: 
         Version: "2012-10-17"
         Statement: 
@@ -210,12 +217,14 @@ Resources:
   ArtifactBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub ${StackName}-artifacts
 
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
       Name: !Sub ${StackName}-${ServiceName}-build
-      Description: !Sub ${ServiceName} codebuild project.
+      Description: !Sub ${ServiceName} Api application codebuild project.
       ServiceRole: !GetAtt CodeBuildRole.Arn
       Artifacts:
         Type: CODEPIPELINE
@@ -227,7 +236,7 @@ Resources:
         EnvironmentVariables:
             - Name: REPOSITORY_URI
               Type: PLAINTEXT
-              Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ServiceName}-ecr
+              Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StackName}-ecr
             - Name: AWS_DEFAULT_REGION
               Type: PLAINTEXT
               Value: !Ref AWS::Region
@@ -334,7 +343,7 @@ Resources:
                 Branch: master
                 OAuthToken: '{{resolve:secretsmanager:GITHUB_ACCESS:SecretString:GITHUB_ACCESS_TOKEN}}'
               OutputArtifacts:
-                - Name: dotnet-app
+                - Name: dotnetApp
               RunOrder: 1
         - Name: Build
           Actions:
@@ -347,7 +356,7 @@ Resources:
               Configuration:
                 ProjectName: !Ref CodeBuildProject
               InputArtifacts:
-                - Name: dotnet-app
+                - Name: dotnetApp
               OutputArtifacts:
                 - Name: BuildOutput
 

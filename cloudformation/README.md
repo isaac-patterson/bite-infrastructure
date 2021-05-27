@@ -9,10 +9,10 @@
 
 Deploys the differences between local root-stack.yaml and the latest deployed rootstack.yaml, rollsback upon failure
 
-1. Package the root stack:
-```aws cloudformation package --template-file root-stack.yaml --output-template packaged.yaml --s3-bucket nested-stack-bucket2```
+1. Package the root stack: <br/>
+```aws cloudformation package --template-file root-stack.yaml --output-template packaged.yaml --s3-bucket packaged-templates```
 
-2. Deploy to ```dev```, ```stage``` or ```prod```:
+2. Deploy to ```dev```, ```stage``` or ```prod```: <br/>
 ```aws cloudformation deploy --region us-east-1 --template-file packaged.yaml --stack-name rootStack  --capabilities CAPABILITY_NAMED_IAM --parameter-overrides Stage=<STAGE_NAME>```
 
 ```--capabilities CAPABILITY_NAMED_IAM``` allows cloudformation to name iam resources
@@ -20,20 +20,17 @@ Deploys the differences between local root-stack.yaml and the latest deployed ro
 
 # First time setup
 
-pre-deployment
----------------
- - Each website defined in root template needs an acm certificate and route 53 hosted zone before running
- - Change the ```DesiredCount``` of all ecs services to ```0``` as otherwise it'll pull from an empty ecr repo and fail deployment
+1. pre-deployment
+    - Each website defined in root template needs an acm certificate and route 53 hosted zone before running
+    - Change the ```DesiredCount``` of all ecs services to ```0``` as otherwise it'll pull from an empty ecr repo and fail deployment
 
-Deploy aws infra (see above)
-----------------------------
+2. deploy aws infra (see above)
 
-post-deployment
----------------
- - Run script DBTableSetup.sql via AWS RDS
- - Run script PopulateInitialData.sql via AWS RDS
- - Run canary release for user-bff and retail bff
- - Change the ```DesiredCount``` of all ecs services to ```2``` and then redeploy the stack
+3. post-deployment
+    - Run script DBTableSetup.sql via AWS RDS
+    - Run script PopulateInitialData.sql via AWS RDS
+    - Run canary release for user-bff and retail bff
+    - Change the ```DesiredCount``` of all ecs services to ```2``` and then redeploy the stack
 
 # Notes
 

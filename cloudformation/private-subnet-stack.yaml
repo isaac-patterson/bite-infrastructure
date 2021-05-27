@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: veni db resources in private subnets
+Description: private subnet resources
 
 Parameters:
   DBUser:
@@ -11,11 +11,11 @@ Parameters:
     Default: deDiGDJQcafnyrML
   DBName:
     Type: String
-    Default: veni
+    Default: bite
   StackName:
     Description: An Application name that will be prefixed to resource names
     Type: String
-    Default: veni-db-stack
+    Default: private-subnet-stack
   Stage:
     Type: String
   PrivateSubnet1:
@@ -32,6 +32,17 @@ Parameters:
     MinLength: 1
 
 Resources:
+  #ECS Cluster
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub ${StackName}-ecs-cluster
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} ECS Cluster
+        - Key: Project
+          Value: bite ecs cluster
+  
   #Aurora SQL
   RDSCluster:
     Properties: 
@@ -77,7 +88,7 @@ Resources:
         - Key: Name
           Value: !Sub ${StackName} RDS Subnet Group
         - Key: Project
-          Value: veni
+          Value: bite
   
   DBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -158,4 +169,11 @@ Resources:
       Value: !Join [ "", [ !GetAtt RDSCluster.Endpoint.Address, "" ] ] 
       Description: "SSM Parameter for maintaining the Aurora DB Host."
       Tags:
-        "Environment": "DEV"                         
+        "Environment": "DEV"      
+
+Outputs:
+  ECSCluster:
+    Description: The name of the ECS cluster
+    Value: !Ref ECSCluster
+    Export:
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSCluster' ]]                    
