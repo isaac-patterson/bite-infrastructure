@@ -1,11 +1,3 @@
-CREATE TABLE IF NOT EXISTS ToDos(
-    id MEDIUMINT not null auto_increment,
-    CreatedTime TIMESTAMP DEFAULT now(),
-    Status VARCHAR(50),
-    Task VARCHAR(50),
-    PRIMARY KEY(id)
-);
-
 CREATE TABLE IF NOT EXISTS Restaurant(
     RestaurantId MEDIUMINT not null auto_increment,
     Name VARCHAR(50),
@@ -24,6 +16,7 @@ CREATE TABLE IF NOT EXISTS MenuItem(
     Description VARCHAR(150),
     Price DECIMAL,
     CreatedTime TIMESTAMP DEFAULT now(),
+    AvailableOptionsCount MEDIUMINT,
     PRIMARY KEY(MenuItemId),
     FOREIGN KEY(RestaurantId) REFERENCES Restaurant(RestaurantId)
 );

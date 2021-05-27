@@ -49,6 +49,7 @@ Resources:
       DBClusterParameterGroupName: 
         Ref: RDSDBClusterParameterGroup
       Engine: aurora
+      EnableHttpEndpoint: True
       EngineMode: serverless
       MasterUserPassword: 
         Ref: DBPassword
