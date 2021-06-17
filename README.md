@@ -6,6 +6,8 @@ Prereqs:
  * Node.js
  * React
  * Visual studio with .net core 3.1
+ * Docker
+ * AWS CLI
 
 Setup:
 1. Clone all repos

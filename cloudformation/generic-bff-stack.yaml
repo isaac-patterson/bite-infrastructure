@@ -33,7 +33,12 @@ Parameters:
     Type: String
   ListnerRulePriority:
     Type: String
-
+  CognitoPool:
+    Type: String
+  CognitoPoolClient: 
+    Type: String
+  CognitoPoolDomain:
+    Type: String
 
 Resources:
   #Service task definition
@@ -118,17 +123,32 @@ Resources:
   LoadBalancerRule:
       Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
       Properties:
-          Priority: !Ref ListnerRulePriority
-          ListenerArn: !Ref HTTPSListener
-          Conditions: 
-            - 
-              Field: "path-pattern"
-              Values: 
-                - !Ref PathPattern
-          Actions: 
-            - 
-              Type: "forward"
-              TargetGroupArn: !Ref TargetGroup
+        Priority: !Ref ListnerRulePriority
+        ListenerArn: !Ref HTTPSListener
+        Conditions: 
+          - 
+            Field: "path-pattern"
+            Values: 
+              - !Ref PathPattern
+        Actions: 
+          # - 
+          #   Type: "authenticate-cognito" 
+          #   Order: 1 
+          #   AuthenticateCognitoConfig:
+          #     #OnUnauthenticatedRequest: deny
+          #     SessionCookieName: String
+          #     SessionTimeout: 604800 #7days
+          #     UserPoolArn: !Ref CognitoPool
+          #     UserPoolClientId: !Ref CognitoPoolClient
+          #     UserPoolDomain: !Ref CognitoPoolDomain
+          # - 
+          #   Type: "forward"
+          #   Order: 2
+          #   TargetGroupArn: !Ref TargetGroup
+          - 
+            Type: "forward"
+            TargetGroupArn: !Ref TargetGroup
+        
 
   #ECS roles & log group
   ECSRole:

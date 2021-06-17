@@ -42,7 +42,14 @@ Resources:
           Value: !Sub ${StackName} ECS Cluster
         - Key: Project
           Value: bite ecs cluster
-  
+
+  MenuItemPhotoBucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: !Sub ${StackName}-menu-item-photo-bucket
+      VersioningConfiguration: 
+        Status: Enabled
+
   #Aurora SQL
   RDSCluster:
     Properties: 
