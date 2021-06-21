@@ -29,15 +29,15 @@ Parameters:
 
 Resources:
   # #Specifies an Elastic IP (EIP) address for natgateway
-  NAT1EIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-  #Specifies an Elastic IP (EIP) address for natgateway
-  NAT2EIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
+  # NAT1EIP:
+  #   Type: AWS::EC2::EIP
+  #   Properties:
+  #     Domain: vpc
+  # #Specifies an Elastic IP (EIP) address for natgateway
+  # NAT2EIP:
+  #   Type: AWS::EC2::EIP
+  #   Properties:
+  #     Domain: vpc
 
   # #internet cannot get through NAT gateway explicitily allowed, mostly used for outbound traffic
   # #can be used for other things aswell: eg.  yum updates, external database connections, wget calls, etc
@@ -73,27 +73,6 @@ Resources:
   #     DestinationCidrBlock: 0.0.0.0/0
   #     NatGatewayId:
   #       Ref: NATGateway2
-
-  ECSSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupName: !Sub ${StackName}-ecs-app-sg
-      GroupDescription: Access to the Fargate containers
-      VpcId: !Ref ApiVPC
-  
-  #this ingress allows inbound traffic to ECS services from all private IP addresses of the network interfaces assosiated with the source security group
-  #in this case from the public load ballancer
-  #every ec2 instance must have a security group
-
-  ECSSecurityGroupIngressTCP:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      Description: Ingress TCP All Port from ELB SG
-      GroupId: !Ref 'ECSSecurityGroup'
-      IpProtocol: tcp
-      FromPort: 1
-      ToPort: 65535
-      SourceSecurityGroupId: !Ref 'PLBSecurityGroup'
 
   #Acts as a firewall for the PLB, controls both inbound traffic
   PLBSecurityGroup:
@@ -176,11 +155,11 @@ Outputs:
     Value: !Join ['', ['http://', !GetAtt 'PublicLoadBalancer.DNSName']]
     Export:
       Name: !Join [':', [ !Ref 'AWS::StackName', 'ExternalUrl' ] ]
-  ECSSecurityGroup:
-    Description: ECSSecurityGroup for the loadbalancer
-    Value: !Ref 'ECSSecurityGroup'
+  PLBSecurityGroup:
+    Description: loadbalancer security group
+    Value: !Ref PLBSecurityGroup
     Export:
-      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSSecurityGroup' ] ]
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'PLBSecurityGroup' ] ]
   HTTPSListener:
     Description: The ARN of the public load balancer's Listener
     Value: !Ref HTTPSListener

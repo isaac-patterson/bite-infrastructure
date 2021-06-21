@@ -27,11 +27,31 @@ Parameters:
   ApiVPC:
     Type: String
     MinLength: 1
-  ECSSecurityGroup:
+  PLBSecurityGroup:
     Type: String
     MinLength: 1
 
 Resources:
+  ECSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${StackName}-ecs-app-sg
+      GroupDescription: Access to the Fargate containers
+      VpcId: !Ref ApiVPC
+  
+  #this ingress allows inbound traffic to ECS services from all private IP addresses of the network interfaces assosiated with the source security group
+  #in this case from the public load ballancer
+  #every ec2 instance must have a security group
+  ECSSecurityGroupIngressTCP:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress TCP All Port from ELB SG
+      GroupId: !Ref 'ECSSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 1
+      ToPort: 65535
+      SourceSecurityGroupId: !Ref 'PLBSecurityGroup'
+
   #ECS Cluster
   ECSCluster:
     Type: AWS::ECS::Cluster
@@ -91,7 +111,6 @@ Resources:
       SubnetIds:
         - !Ref PrivateSubnet1
         - !Ref PrivateSubnet2
-
       Tags:
         - Key: Name
           Value: !Sub ${StackName} RDS Subnet Group
@@ -184,4 +203,9 @@ Outputs:
     Description: The name of the ECS cluster
     Value: !Ref ECSCluster
     Export:
-      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSCluster' ]]                    
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSCluster' ]]    
+  ECSSecurityGroup:
+    Description: elastic container service security group
+    Value: !Ref ECSSecurityGroup
+    Export:
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSSecurityGroup' ] ]                

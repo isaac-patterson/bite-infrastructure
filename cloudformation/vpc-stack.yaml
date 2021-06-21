@@ -65,6 +65,7 @@ Resources:
       AllowedOAuthFlowsUserPoolClient: true
       CallbackURLs:
         - http://localhost:3000
+        - https://public-stack-elb-705744411.us-east-1.elb.amazonaws.com/oauth2/idpresponse
       AllowedOAuthFlows:
         - code
         - implicit
@@ -135,6 +136,7 @@ Resources:
       AllowedOAuthFlowsUserPoolClient: true
       CallbackURLs:
         - http://localhost:3000
+        - https://public-stack-elb-705744411.us-east-1.elb.amazonaws.com/oauth2/idpresponse
       AllowedOAuthFlows:
         - code
         - implicit
@@ -152,7 +154,6 @@ Resources:
           AccessToken: hours
           IdToken: hours
           RefreshToken: hours
-      AllowedOAuthFlowsUserPoolClient: true
       ExplicitAuthFlows: 
         - ALLOW_REFRESH_TOKEN_AUTH
       PreventUserExistenceErrors: ENABLED

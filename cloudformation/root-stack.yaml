@@ -60,7 +60,7 @@ Resources:
         PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
         PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
         ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
-        ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
+        PLBSecurityGroup: !GetAtt PublicSubnetStack.Outputs.PLBSecurityGroup
   
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
@@ -72,7 +72,7 @@ Resources:
         PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
         PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
         ECSCluster: !GetAtt PrivateSubnetStack.Outputs.ECSCluster
-        ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
+        ECSSecurityGroup: !GetAtt PrivateSubnetStack.Outputs.ECSSecurityGroup
         ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
         HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
         StackName: user-bff-stack
@@ -96,7 +96,7 @@ Resources:
         PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
         PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
         ECSCluster: !GetAtt PrivateSubnetStack.Outputs.ECSCluster
-        ECSSecurityGroup: !GetAtt PublicSubnetStack.Outputs.ECSSecurityGroup
+        ECSSecurityGroup: !GetAtt PrivateSubnetStack.Outputs.ECSSecurityGroup
         ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
         HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
         StackName: retail-bff-stack

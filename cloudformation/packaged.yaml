@@ -33,14 +33,14 @@ Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/e1e4e958cac53b2c443c8278d74a2f02.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/ac48be2900442ee399f5fc5b5769becf.template
       Parameters:
         Stage:
           Ref: Stage
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/46bb26f4e9cca3e47febdcdfd715b311.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/905bad489e81b7f54451a9055b96d14f.template
       Parameters:
         Stage:
           Ref: Stage
@@ -67,7 +67,7 @@ Resources:
   PrivateSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/3045d346a50cc14837e9248d8d4183db.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/145f29e0a0d0704b0956ce9d4e0d557f.template
       Parameters:
         Stage:
           Ref: Stage
@@ -83,14 +83,14 @@ Resources:
           Fn::GetAtt:
           - VPCStack
           - Outputs.ApiVPC
-        ECSSecurityGroup:
+        PLBSecurityGroup:
           Fn::GetAtt:
           - PublicSubnetStack
-          - Outputs.ECSSecurityGroup
+          - Outputs.PLBSecurityGroup
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/70ba70232e0b8566f5679217e43d0508.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/e5f91a07592671aefd32e92c74169148.template
       Parameters:
         Stage:
           Ref: Stage
@@ -112,7 +112,7 @@ Resources:
           - Outputs.ECSCluster
         ECSSecurityGroup:
           Fn::GetAtt:
-          - PublicSubnetStack
+          - PrivateSubnetStack
           - Outputs.ECSSecurityGroup
         ExternalUrl:
           Fn::GetAtt:
@@ -144,7 +144,7 @@ Resources:
   RetailBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/70ba70232e0b8566f5679217e43d0508.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/e5f91a07592671aefd32e92c74169148.template
       Parameters:
         Stage:
           Ref: Stage
@@ -166,7 +166,7 @@ Resources:
           - Outputs.ECSCluster
         ECSSecurityGroup:
           Fn::GetAtt:
-          - PublicSubnetStack
+          - PrivateSubnetStack
           - Outputs.ECSSecurityGroup
         ExternalUrl:
           Fn::GetAtt:
