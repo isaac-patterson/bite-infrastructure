@@ -156,8 +156,39 @@ Resources:
           RefreshToken: hours
       ExplicitAuthFlows: 
         - ALLOW_REFRESH_TOKEN_AUTH
+
       PreventUserExistenceErrors: ENABLED
       GenerateSecret: true
+
+  #used on mobile apps
+  UserCognitoPoolClientNoSecret:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserCognitoPool
+      AllowedOAuthFlowsUserPoolClient: true
+      CallbackURLs:
+        - http://localhost:3000
+      AllowedOAuthFlows:
+        - code
+        - implicit
+      AllowedOAuthScopes:
+        - phone
+        - email
+        - openid
+        - profile
+      SupportedIdentityProviders:
+        - COGNITO
+      AccessTokenValidity: 2
+      RefreshTokenValidity: 24
+      IdTokenValidity: 2
+      TokenValidityUnits: 
+          AccessToken: hours
+          IdToken: hours
+          RefreshToken: hours
+      ExplicitAuthFlows: 
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_SRP_AUTH
+      PreventUserExistenceErrors: ENABLED
 
   UserCognitoPoolDomain:
     Type: AWS::Cognito::UserPoolDomain
