@@ -112,12 +112,14 @@ CREATE TABLE IF NOT EXISTS Coupon(
 );
 
 CREATE TABLE IF NOT EXISTS GiftWallet(
-    CouponId BIGINT not null auto_increment,
-    CreatedDate TIMESTAMP DEFAULT now(),
-    ExpiryDate TIMESTAMP,
-    Discount DECIMAL,
-    DiscountCode VARCHAR(20),
+    ReceiverCognitoId VARCHAR(50),
+    SenderCognitoId VARCHAR(50),
+    MenuItemId BIGINT,
+    GiftType VARCHAR(50),
+    Status VARCHAR(20),
+    SentDate TIMESTAMP default now(),
+    SpentDate TIMESTAMP,
 
-    PRIMARY KEY(CouponId)
+    PRIMARY KEY(ReceiverCognitoId)
 );
 
