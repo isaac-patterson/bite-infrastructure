@@ -123,3 +123,55 @@ CREATE TABLE IF NOT EXISTS GiftWallet(
     PRIMARY KEY(ReceiverCognitoId)
 );
 
+CREATE TABLE IF NOT EXISTS Charge(
+    Id VARCHAR(50),
+    OrderId BIGINT,
+    SenderCognitoId VARCHAR(50),
+    Object VARCHAR(20),
+    Amount DECIMAL,
+    AmountCaptured DECIMAL,
+    AmountRefunded DECIMAL,
+    Application VARCHAR(50),
+    ApplicationFee DECIMAL,
+    ApplicationFeeAmount DECIMAL,
+    BalanceTransaction VARCHAR(50),
+    Captured BOOLEAN,
+    Created TIMESTAMP,
+    Currency VARCHAR(50),
+    Customer VARCHAR(50),
+    Description VARCHAR(50),
+    Disputed BOOLEAN,
+    FailureCode BOOLEAN,
+    FailureMessage VARCHAR(50),
+    Invoice VARCHAR(50),
+    OrderInfo VARCHAR(50),
+    Paid BOOLEAN,
+    PaymentMethod VARCHAR(50),
+    ReceiptEmail VARCHAR(50),
+    ReceiptUrl VARCHAR(50),
+    Refunded BOOLEAN,
+    Review VARCHAR(50),
+    Shipping VARCHAR(50),
+    StatementDescriptor VARCHAR(50),
+    Status VARCHAR(50),
+
+    PRIMARY KEY(OrderId)
+);
+
+CREATE TABLE IF NOT EXISTS Refund(
+    OrderId BIGINT,
+    SenderCognitoId VARCHAR(50),
+    Id VARCHAR(50),
+    Object VARCHAR(50),
+    Amount DECIMAL,
+    BalanceTransaction DECIMAL,
+    Charge VARCHAR(50),
+    Created TIMESTAMP,
+    Currency VARCHAR(20),
+    PaymentIntent VARCHAR(50),
+    Reason VARCHAR(50),
+    ReceiptNumber VARCHAR(50),
+    Status VARCHAR(50),
+
+    PRIMARY KEY(OrderId)
+);
