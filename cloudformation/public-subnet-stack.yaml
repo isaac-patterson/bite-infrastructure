@@ -29,50 +29,50 @@ Parameters:
 
 Resources:
   # #Specifies an Elastic IP (EIP) address for natgateway
-  # NAT1EIP:
-  #   Type: AWS::EC2::EIP
-  #   Properties:
-  #     Domain: vpc
-  # #Specifies an Elastic IP (EIP) address for natgateway
-  # NAT2EIP:
-  #   Type: AWS::EC2::EIP
-  #   Properties:
-  #     Domain: vpc
+  NAT1EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  #Specifies an Elastic IP (EIP) address for natgateway
+  NAT2EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
 
-  # #internet cannot get through NAT gateway explicitily allowed, mostly used for outbound traffic
-  # #can be used for other things aswell: eg.  yum updates, external database connections, wget calls, etc
-  # #private subnets connected to natgateway
-  # NATGateway1:
-  #   Type: AWS::EC2::NatGateway
-  #   Properties:
-  #     AllocationId:
-  #       Fn::GetAtt:
-  #       - NAT1EIP  
-  #       - AllocationId
-  #     SubnetId: !Ref PublicSubnet1
-  # PrivateSubnetNATGateway1Route:
-  #   Type: AWS::EC2::Route
-  #   Properties:
-  #     RouteTableId: !Ref PrivateSubnet1RouteTable
-  #     DestinationCidrBlock: 0.0.0.0/0
-  #     NatGatewayId:
-  #       Ref: NATGateway1
+  #internet cannot get through NAT gateway explicitily allowed, mostly used for outbound traffic
+  #can be used for other things aswell: eg.  yum updates, external database connections, wget calls, etc
+  #private subnets connected to natgateway
+  NATGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+        - NAT1EIP  
+        - AllocationId
+      SubnetId: !Ref PublicSubnet1
+  PrivateSubnetNATGateway1Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateSubnet1RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: NATGateway1
   
-  # NATGateway2:
-  #   Type: AWS::EC2::NatGateway
-  #   Properties:
-  #     AllocationId:
-  #       Fn::GetAtt:
-  #       - NAT2EIP
-  #       - AllocationId
-  #     SubnetId: !Ref PublicSubnet2
-  # PrivateSubnetNATGateway2Route:
-  #   Type: AWS::EC2::Route
-  #   Properties:
-  #     RouteTableId: !Ref PrivateSubnet2RouteTable
-  #     DestinationCidrBlock: 0.0.0.0/0
-  #     NatGatewayId:
-  #       Ref: NATGateway2
+  NATGateway2:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+        - NAT2EIP
+        - AllocationId
+      SubnetId: !Ref PublicSubnet2
+  PrivateSubnetNATGateway2Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateSubnet2RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: NATGateway2
 
   #Acts as a firewall for the PLB, controls both inbound traffic
   PLBSecurityGroup:
@@ -119,7 +119,7 @@ Resources:
           SslPolicy: "ELBSecurityPolicy-2016-08"
           Certificates: 
             - 
-              CertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/c5c11580-5bc8-4736-8efe-97e7ccfd397b
+              CertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/5cd10a6a-ff2f-41c8-9203-e3fa310a7a74
           
           # Returns a 400 if no rules are met
           DefaultActions: 

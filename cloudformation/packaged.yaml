@@ -33,14 +33,14 @@ Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/dd2e23e15fda4644bdb57e07fa099d6f.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/706954717b495e86407e6129c2b77648.template
       Parameters:
         Stage:
           Ref: Stage
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/905bad489e81b7f54451a9055b96d14f.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/0edeaeccd5013284a117dbab946ad2d5.template
       Parameters:
         Stage:
           Ref: Stage
