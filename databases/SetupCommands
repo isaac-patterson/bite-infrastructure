@@ -1,0 +1,11 @@
+git config --global user.name "vincent"
+git config --global user.email "vincentvr3@gmail.com"
+git config user.name "vincent"
+git config user.email "vincentvr3@gmail.com"
+
+git clone https://github.com/veni-nz/infrastructure.git
+
+
+git add .
+git commit -m "decsription of what youve changed"
+git push 

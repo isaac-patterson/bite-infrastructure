@@ -1,9 +1,9 @@
 INSERT INTO Restaurant (RestaurantId, Name, Description, CountryCode, Address, CreatedDate)
-VALUES (1, 'Tacos', 'Yummy Tacos', 'CNTRY/NZ', '9 Symonds Street, Auckland CBD, Auckland 1010', CURRENT_TIMESTAMP);
+VALUES (2, 'Tacos', 'Yummy Tacos', 'CNTRY/NZ', '9 Symonds Street, Auckland CBD, Auckland 1010', CURRENT_TIMESTAMP);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    2,
     'Taco', 
     'Classic Taco', 
     'Choose BBQ Jackfruit, Minced beef or Grilled Veges. For Chicken or Pork (Add $1)', 
@@ -11,32 +11,31 @@ VALUES (
     CURRENT_TIMESTAMP);
 
 INSERT INTO MenuItemOption (MenuItemId, Name)
-VALUES (1, 'Fillin');
+VALUES (7, 'Fillin');
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name , Price)
-VALUES (1, 'Grilled Veggies', 0);
+VALUES (25, 'Grilled Veggies', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (1, 'BBQ Jackfruit', 0);
+VALUES (25, 'BBQ Jackfruit', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (1, 'Minced Beef', 0);
+VALUES (25, 'Minced Beef', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (1, 'Pork Carnitas', 1.0);
+VALUES (25, 'Pork Carnitas', 1.0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (1, 'Grilled Chicken', 1.0);
-
+VALUES (25, 'Grilled Chicken', 1.0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name)
-VALUES (1, 'Tortilla');
+VALUES (8, 'Tortilla');
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (2, 'Soft Flour', 0);
+VALUES (26, 'Soft Flour', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (2, 'Crispy Corn(GF)', 0);
+VALUES (26, 'Crispy Corn(GF)', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name)
 VALUES (1, 'Salad');

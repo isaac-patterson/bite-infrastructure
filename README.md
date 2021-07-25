@@ -5,7 +5,7 @@ Prereqs:
  * MySQL workbench
  * Node.js
  * React
- * Visual studio with .net core 3.1
+ * Visual studio with .net core 5
  * Docker
  * AWS CLI
 

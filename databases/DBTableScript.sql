@@ -101,16 +101,6 @@ CREATE TABLE IF NOT EXISTS Coupon(
     PRIMARY KEY(CouponId)
 );
 
-CREATE TABLE IF NOT EXISTS Coupon(
-    CouponId BIGINT not null auto_increment,
-    CreatedDate TIMESTAMP DEFAULT now(),
-    ExpiryDate TIMESTAMP,
-    Discount DECIMAL,
-    DiscountCode VARCHAR(20),
-
-    PRIMARY KEY(CouponId)
-);
-
 CREATE TABLE IF NOT EXISTS GiftWallet(
     ReceiverCognitoId VARCHAR(50),
     SenderCognitoId VARCHAR(50),
