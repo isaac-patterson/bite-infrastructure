@@ -86,6 +86,7 @@ Resources:
       AllowedOAuthFlowsUserPoolClient: true
       ExplicitAuthFlows: 
         - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_PASSWORD_AUTH
       PreventUserExistenceErrors: ENABLED
       GenerateSecret: true
   
@@ -152,6 +153,7 @@ Resources:
           RefreshToken: hours
       ExplicitAuthFlows: 
         - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_PASSWORD_AUTH
 
       PreventUserExistenceErrors: ENABLED
       GenerateSecret: true
@@ -184,6 +186,7 @@ Resources:
       ExplicitAuthFlows: 
         - ALLOW_REFRESH_TOKEN_AUTH
         - ALLOW_USER_SRP_AUTH
+        - ALLOW_USER_PASSWORD_AUTH
       PreventUserExistenceErrors: ENABLED
 
   UserCognitoPoolDomain:
