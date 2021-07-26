@@ -33,12 +33,6 @@ Parameters:
     Type: String
   ListnerRulePriority:
     Type: String
-  CognitoPool:
-    Type: String
-  CognitoPoolClient: 
-    Type: String
-  CognitoPoolDomain:
-    Type: String
 
 Resources:
   #Service task definition
@@ -132,23 +126,8 @@ Resources:
               - !Ref PathPattern
         Actions: 
           - 
-            Type: "authenticate-cognito" 
-            Order: 1 
-            AuthenticateCognitoConfig:
-              #OnUnauthenticatedRequest: deny
-              Scope: "openid"
-              SessionCookieName: "bite-auth-cookie"
-              SessionTimeout: 604800 #7days
-              UserPoolArn: !Ref CognitoPool
-              UserPoolClientId: !Ref CognitoPoolClient
-              UserPoolDomain: !Ref CognitoPoolDomain
-          - 
             Type: "forward"
-            Order: 2
             TargetGroupArn: !Ref TargetGroup
-          # - 
-          #   Type: "forward"
-          #   TargetGroupArn: !Ref TargetGroup
         
 
   #ECS roles & log group

@@ -8,6 +8,7 @@ Prereqs:
  * Visual studio with .net core 5
  * Docker
  * AWS CLI
+ * Amplify CLI
 
 Setup:
 1. Clone all repos

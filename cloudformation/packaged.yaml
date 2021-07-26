@@ -90,7 +90,7 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/a66b31e4b93eac90ec20b8d7208ede99.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/6bb59fe0b16dfc24eaf4dfb3588b5e2b.template
       Parameters:
         Stage:
           Ref: Stage
@@ -129,22 +129,10 @@ Resources:
         PathPattern: /user/*
         DesiredTaskCount: 1
         ListnerRulePriority: 1
-        CognitoPool:
-          Fn::GetAtt:
-          - VPCStack
-          - Outputs.UserCognitoPool
-        CognitoPoolClient:
-          Fn::GetAtt:
-          - VPCStack
-          - Outputs.UserCognitoPoolClient
-        CognitoPoolDomain:
-          Fn::GetAtt:
-          - VPCStack
-          - Outputs.UserCognitoPoolDomain
   RetailBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/a66b31e4b93eac90ec20b8d7208ede99.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/6bb59fe0b16dfc24eaf4dfb3588b5e2b.template
       Parameters:
         Stage:
           Ref: Stage
@@ -183,15 +171,3 @@ Resources:
         PathPattern: /retail/*
         DesiredTaskCount: 1
         ListnerRulePriority: 2
-        CognitoPool:
-          Fn::GetAtt:
-          - VPCStack
-          - Outputs.RetailCognitoPool
-        CognitoPoolClient:
-          Fn::GetAtt:
-          - VPCStack
-          - Outputs.RetailCognitoPoolClient
-        CognitoPoolDomain:
-          Fn::GetAtt:
-          - VPCStack
-          - Outputs.RetailCognitoPoolDomain

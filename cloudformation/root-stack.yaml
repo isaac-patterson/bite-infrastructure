@@ -82,9 +82,7 @@ Resources:
         PathPattern: /user/*
         DesiredTaskCount: 1 #place to 0 if there is no image in the ecr repository yet
         ListnerRulePriority: 1
-        CognitoPool: !GetAtt VPCStack.Outputs.UserCognitoPool
-        CognitoPoolClient: !GetAtt VPCStack.Outputs.UserCognitoPoolClient
-        CognitoPoolDomain: !GetAtt VPCStack.Outputs.UserCognitoPoolDomain
+
 
   RetailBFFStack:
     Type: AWS::CloudFormation::Stack
@@ -106,6 +104,4 @@ Resources:
         PathPattern: /retail/*
         DesiredTaskCount: 1 #place to 0 if there is no image in the ecr repository yet
         ListnerRulePriority: 2
-        CognitoPool: !GetAtt VPCStack.Outputs.RetailCognitoPool
-        CognitoPoolClient: !GetAtt VPCStack.Outputs.RetailCognitoPoolClient
-        CognitoPoolDomain: !GetAtt VPCStack.Outputs.RetailCognitoPoolDomain
+
