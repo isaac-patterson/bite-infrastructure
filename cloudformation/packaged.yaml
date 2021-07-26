@@ -33,7 +33,7 @@ Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/706954717b495e86407e6129c2b77648.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/09ee16a96e3623b5df7f5d0b2b599be7.template
       Parameters:
         Stage:
           Ref: Stage
@@ -90,7 +90,7 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/e5f91a07592671aefd32e92c74169148.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/a66b31e4b93eac90ec20b8d7208ede99.template
       Parameters:
         Stage:
           Ref: Stage
@@ -144,7 +144,7 @@ Resources:
   RetailBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/e5f91a07592671aefd32e92c74169148.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/a66b31e4b93eac90ec20b8d7208ede99.template
       Parameters:
         Stage:
           Ref: Stage

@@ -136,7 +136,8 @@ Resources:
             Order: 1 
             AuthenticateCognitoConfig:
               #OnUnauthenticatedRequest: deny
-              SessionCookieName: String
+              Scope: "openid"
+              SessionCookieName: "bite-auth-cookie"
               SessionTimeout: 604800 #7days
               UserPoolArn: !Ref CognitoPool
               UserPoolClientId: !Ref CognitoPoolClient
