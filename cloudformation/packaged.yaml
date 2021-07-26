@@ -33,7 +33,7 @@ Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/09ee16a96e3623b5df7f5d0b2b599be7.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/215cd40d0cabfee4d1eb8b0668196203.template
       Parameters:
         Stage:
           Ref: Stage
