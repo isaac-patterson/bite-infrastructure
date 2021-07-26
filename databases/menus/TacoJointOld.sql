@@ -38,7 +38,104 @@ INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (26, 'Crispy Corn(GF)', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name)
-VALUES (1, 'Salad');
+VALUES (9, 'Salad');
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (27, 'No cabbage and lettuce mix', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (27, 'Lettuce and cabbage mix', 0);
+
+INSERT INTO MenuItemOption (MenuItemId, Name)
+VALUES (10, 'Dairy(Choose One)');
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (28, 'No Dairy', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (28, 'No Cheese', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (28, 'No Source Cream', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (28, 'Jalapeño Ranch', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (28, 'Chipotle Crema', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (28, 'Sour Cream', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (28, 'Cheese', 0);
+
+INSERT INTO MenuItemOption (MenuItemId, Name)
+VALUES (11, 'Salsa(med/hot');
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (29, 'No Salsa Roja/Picante', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (29, 'Salsa Picante', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (29, 'Salsa Roja', );
+
+INSERT INTO MenuItemOption (MenuItemId, Name)
+VALUES (12, 'Add some Heat');
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (30, 'Jalapenos', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (30, 'Tapatio Taco Sauce', 0);
+
+
+INSERT INTO MenuItemOption (MenuItemId, Name)
+VALUES (13, 'Guacamole');
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (31, 'Guacamole', 1.5);
+
+INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
+VALUES (
+    2,
+    'Taco', 
+    'Classic Taco', 
+    'Sweet pulled pork carnitas, fruit salsa, chipotle crema and guacamole', 
+    13.40, 
+    CURRENT_TIMESTAMP);
+
+INSERT INTO MenuItemOption (MenuItemId, Name)
+VALUES (8, 'Tortilla');
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name , Price)
+VALUES (25, 'Soft fLOUR', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (25, 'BBQ Jackfruit', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (25, 'Minced Beef', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (25, 'Pork Carnitas', 1.0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (25, 'Grilled Chicken', 1.0);
+
+INSERT INTO MenuItemOption (MenuItemId, Name)
+VALUES (8, 'Tortilla');
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (26, 'Soft Flour', 0);
+
+INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
+VALUES (26, 'Crispy Corn(GF)', 0);
+
+INSERT INTO MenuItemOption (MenuItemId, Name)
+VALUES (9, 'Salad');
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (3, 'No cabbage and lettuce mix', 0);
@@ -47,7 +144,7 @@ INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (3, 'Lettuce and cabbage mix', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name)
-VALUES (1, 'Dairy(Choose One)');
+VALUES (10, 'Dairy(Choose One)');
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (4, 'No Dairy', 0);
@@ -71,7 +168,7 @@ INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (4, 'Cheese', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name)
-VALUES (1, 'Salsa(med/hot');
+VALUES (11, 'Salsa(med/hot');
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (5, 'No Salsa Roja/Picante', 0);
