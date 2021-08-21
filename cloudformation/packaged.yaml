@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Root/Parent stack for veni infrastructure
+Description: Root/Parent stack for bite infrastructure
 Parameters:
   Stage:
     Type: String
@@ -33,7 +33,7 @@ Resources:
   VPCStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/215cd40d0cabfee4d1eb8b0668196203.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/683e797f8d818b50870eb3ec58b43912.template
       Parameters:
         Stage:
           Ref: Stage
@@ -67,7 +67,7 @@ Resources:
   PrivateSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/145f29e0a0d0704b0956ce9d4e0d557f.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/414784e27c2c44891f2a0f12aa2c3f08.template
       Parameters:
         Stage:
           Ref: Stage
@@ -171,3 +171,10 @@ Resources:
         PathPattern: /retail/*
         DesiredTaskCount: 1
         ListnerRulePriority: 2
+  CognitoStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/a8df6830a9cb44b532c8f397607f0dd2.template
+      Parameters:
+        Stage:
+          Ref: Stage

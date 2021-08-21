@@ -22,10 +22,8 @@ VALUES (25, 'Lil lips (Gentle Nudge of Heat)', 0);
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (25, 'Hot Lips(Standard Heat', 0);
 
-
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (25, 'Flamin Lips (Super Hot)', 0);
-
 
 INSERT INTO MenuItemOption (MenuItemId, Name)
 VALUES (7, 'Choose Sauce (Choose 1)');
@@ -38,7 +36,6 @@ VALUES (26, 'Step Sauce', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (26, 'Ketchup (American Style)', 0);
-
 
 INSERT INTO MenuItemOption (MenuItemId, Name)
 VALUES (7, 'Combo');

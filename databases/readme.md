@@ -6,6 +6,7 @@
 # To run databases and scripts locally
 Fire them at your local DB
 
+# Order of scriprs
 
-
-
+HaPoke
+HotLips

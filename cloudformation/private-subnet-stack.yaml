@@ -154,6 +154,7 @@ Resources:
             ";database=", !Join [ "", [ Ref: DBName, "" ] ],
             ";uid=", !Join [ "", [ Ref: DBUser, "" ] ],
             ";password=", !Join [ "", [ Ref: DBPassword, "" ] ],
+            ";default command timeout=120",
             ";SSLMode=None"
           ]
         ]       

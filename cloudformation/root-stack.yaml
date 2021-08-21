@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Root/Parent stack for veni infrastructure
+Description: Root/Parent stack for bite infrastructure
 
 Parameters:
   Stage:
@@ -104,4 +104,13 @@ Resources:
         PathPattern: /retail/*
         DesiredTaskCount: 1 #place to 0 if there is no image in the ecr repository yet
         ListnerRulePriority: 2
+
+  CognitoStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: cognito-stack.yaml
+      Parameters: 
+        Stage: !Ref Stage
+
+
 

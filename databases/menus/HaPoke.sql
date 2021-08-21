@@ -1,9 +1,74 @@
-INSERT INTO Restaurant (RestaurantId, Name, Description, CountryCode, Address, CreatedDate)
-VALUES (1, 'Poke Bowl', 'Glorious bowls of tasty things', 'CNTRY/NZ', '10 Symonds Street, Auckland CBD, Auckland 1010, New Zealand', CURRENT_TIMESTAMP);
+INSERT INTO Restaurant (RestaurantId, Name, Description, CountryCode, Address, CreatedDate, Category, LogoIcon, Offer)
+VALUES ('0832b802-9892-4964-a645-2fa3a3a0f898', 'Ha Poke', 'Glorious bowls of tasty things', 'CNTRY/NZ', '10 Symonds Street, Auckland CBD, Auckland 1010, New Zealand', CURRENT_TIMESTAMP, "Asian", "U+1F35A", 0);
 
+
+INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
+VALUES (
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
+    'Monday',
+    '09:00',
+    '17:00',
+    True
+    );
+
+INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
+VALUES (
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
+    'Tuesday',
+    '09:00',
+    '17:00',
+    True
+    );
+
+INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
+VALUES (
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
+    'Wednesday',
+    '09:00',
+    '17:00',
+    True
+    );
+
+INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
+VALUES (
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
+    'Thursday',
+    '09:00',
+    '17:00',
+    True
+    );
+
+INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
+VALUES (
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
+    'Friday',
+    '09:00',
+    '17:00',
+    True
+    );
+
+INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
+VALUES (
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
+    'Saturday',
+    '09:00',
+    '17:00',
+    True
+    );
+
+INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
+VALUES (
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
+    'Sunday',
+    '09:00',
+    '17:00',
+    True
+    );
+
+    
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Poke Bowl', 
     'Kimchi Bowl', 
     'Living Goodness Kimchi, edamame, radish, coriander, sprouts, sesame mayo, fried garlic, nori, chilli flakes', 
@@ -69,7 +134,7 @@ VALUES (4, 'Extra tuna', 5.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Poke Bowl', 
     'Spicy Bowl', 
     'Pickled ginger, edamame, crispy garlic, cucumber, radish, onion chips, coriander, chilli mayo, chilli flakes, nori', 
@@ -135,7 +200,7 @@ VALUES (8, 'Extra tuna', 5.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Poke Bowl', 
     'Teriyaki Bowl', 
     'Edamame, onion chips, seaweed salad, cucumber, pickled ginger, teriyaki glaze, sesame mayo, nori, sesame seeds', 
@@ -201,7 +266,7 @@ VALUES (12, 'Extra tuna', 5.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Poke Bowl', 
     'Aloha Bowl', 
     'Pineapple, edamame, pickled ginger, cucumber, seaweed salad, coconut chips, wasabi mayo, onion chips, sesame seeds, nori', 
@@ -267,7 +332,7 @@ VALUES (16, 'Extra tuna', 5.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Breakfast Bowl', 
     'Tropical Bowl', 
     'Banana, pineapple, coconut chips, mango puree, corn flakes, mint leaves', 
@@ -297,7 +362,7 @@ VALUES (18, 'Acai', 2);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Breakfast Bowl', 
     'Protein Bowl', 
     'Banana, pumpkin seeds, goji berries, almond butter, toasted almonds, chia seeds, coconut chips', 
@@ -336,7 +401,7 @@ VALUES (21, 'Porridge', 1);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Breakfast Bowl', 
     'Berry Bowl', 
     'Banana, strawberries, goji Berries, kiwifruit, raspberry puree, toasted almonds, chia seeds', 
@@ -375,7 +440,7 @@ VALUES (24, 'Porridge', 1);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Fresh Juice', 
     'Attack', 
     'Orange, Carrot, Beetroot', 
@@ -384,7 +449,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Fresh Juice', 
     'Defend', 
     'Pineapple, Celery, Orange, Carrot, Lemon & Ginger', 
@@ -393,7 +458,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Fresh Juice', 
     'Refresh', 
     'Apple, Cucumber, Celery, Kale, Mint & Lemon', 
@@ -402,7 +467,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate)
 VALUES (
-    1,
+    '0832b802-9892-4964-a645-2fa3a3a0f898',
     'Fresh Juice', 
     'Tropical', 
     'Apple, Pineapple & Orange', 

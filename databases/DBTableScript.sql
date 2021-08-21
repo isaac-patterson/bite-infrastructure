@@ -1,26 +1,45 @@
 use bite;
 
+ALTER DATABASE bite CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS Restaurant(
-    RestaurantId BIGINT not null auto_increment,
+    RestaurantId  VARCHAR(40),
     CreatedDate TIMESTAMP DEFAULT now(),
     Name VARCHAR(50),
     Description VARCHAR(150),
     CountryCode VARCHAR(10),
     Address VARCHAR(200),
-    Category VARCHAR(30), 
+    Category VARCHAR(30),
+    LogoIcon VARCHAR(50),
+    Offer DECIMAL,
 
     PRIMARY KEY(RestaurantId)
+);
+
+CREATE TABLE IF NOT EXISTS RestaurantOpenDays(
+    Id BIGINT not null auto_increment,
+    RestaurantId VARCHAR(40),
+    CreatedDate TIMESTAMP DEFAULT now(),
+    Day VARCHAR(40) NOT NULL,
+    OpenTime time,
+    CloseTime time,
+    IsOpen BOOLEAN,
+    
+    PRIMARY KEY(Id),
+    FOREIGN KEY(RestaurantId) REFERENCES Restaurant(RestaurantId)
 );
 
 CREATE TABLE IF NOT EXISTS MenuItem(
     MenuItemId BIGINT not null auto_increment,
     CreatedDate TIMESTAMP DEFAULT now(),
-    RestaurantId BIGINT,
+    RestaurantId  VARCHAR(40),
     Category VARCHAR(30),
     Name VARCHAR(30),
     Description VARCHAR(150),
     Price DECIMAL,
     AvailableOptionsCount SMALLINT,
+    IsAvailable BOOLEAN,
+
     PRIMARY KEY(MenuItemId),
     FOREIGN KEY(RestaurantId) REFERENCES Restaurant(RestaurantId)
 );
@@ -45,7 +64,7 @@ CREATE TABLE IF NOT EXISTS MenuItemOptionValue(
 );
 
 CREATE TABLE IF NOT EXISTS User(
-    CognitoUserId VARCHAR(50),
+    CognitoUserId  VARCHAR(40),
     Name VARCHAR(50),
     Email VARCHAR(30),
     PhoneNumber VARCHAR(12),
@@ -59,11 +78,12 @@ CREATE TABLE IF NOT EXISTS User(
 
 CREATE TABLE IF NOT EXISTS Orders(
     OrderId BIGINT not null auto_increment,
-    CognitoUserId VARCHAR(50),
+    CognitoUserId  VARCHAR(40),
+    PickupName  VARCHAR(40),
     Status VARCHAR(10),
     CreatedDate TIMESTAMP DEFAULT now(),
     PickupDate TIMESTAMP,
-    RestaurantId BIGINT,
+    RestaurantId  VARCHAR(40),
     Total DECIMAL,
     Currency VARCHAR(10),
     Notes VARCHAR(100),
@@ -93,6 +113,7 @@ CREATE TABLE IF NOT EXISTS OrderItemOption(
 
 CREATE TABLE IF NOT EXISTS Coupon(
     CouponId BIGINT not null auto_increment,
+    RestaurantId  VARCHAR(40),
     CreatedDate TIMESTAMP DEFAULT now(),
     ExpiryDate TIMESTAMP,
     Discount DECIMAL,
@@ -102,21 +123,22 @@ CREATE TABLE IF NOT EXISTS Coupon(
 );
 
 CREATE TABLE IF NOT EXISTS GiftWallet(
-    ReceiverCognitoId VARCHAR(50),
-    SenderCognitoId VARCHAR(50),
+    GiftId BIGINT not null auto_increment,
+    ReceiverCognitoId  VARCHAR(40),
+    SenderCognitoId  VARCHAR(40),
     MenuItemId BIGINT,
     GiftType VARCHAR(50),
     Status VARCHAR(20),
     SentDate TIMESTAMP default now(),
     SpentDate TIMESTAMP,
 
-    PRIMARY KEY(ReceiverCognitoId)
+    PRIMARY KEY(GiftId)
 );
 
 CREATE TABLE IF NOT EXISTS Charge(
     Id VARCHAR(50),
     OrderId BIGINT,
-    SenderCognitoId VARCHAR(50),
+    SenderCognitoId  VARCHAR(40),
     Object VARCHAR(20),
     Amount DECIMAL,
     AmountCaptured DECIMAL,
@@ -150,7 +172,7 @@ CREATE TABLE IF NOT EXISTS Charge(
 
 CREATE TABLE IF NOT EXISTS Refund(
     OrderId BIGINT,
-    SenderCognitoId VARCHAR(50),
+    SenderCognitoId  VARCHAR(40),
     Id VARCHAR(50),
     Object VARCHAR(50),
     Amount DECIMAL,
@@ -164,4 +186,18 @@ CREATE TABLE IF NOT EXISTS Refund(
     Status VARCHAR(50),
 
     PRIMARY KEY(OrderId)
+);
+
+CREATE TABLE IF NOT EXISTS CardToken(
+    CardTokenId	BIGINT(20) not null auto_increment,
+    CognitoUserId  VARCHAR(40),
+    CustomerId VARCHAR(100),
+    Brand VARCHAR(50),
+    Last4Digit VARCHAR(10),
+    ExpMonth BIGINT,
+    ExpYear	BIGINT,
+    Type VARCHAR(100),
+    CreatedDate	TIMESTAMP DEFAULT now(),
+
+    PRIMARY KEY(CardTokenId)
 );
