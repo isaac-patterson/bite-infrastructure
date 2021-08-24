@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Restaurant(
     Offer DECIMAL,
 
     PRIMARY KEY(RestaurantId)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS RestaurantOpenDays(
     Id BIGINT not null auto_increment,
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS MenuItem(
     RestaurantId  VARCHAR(40),
     Category VARCHAR(30),
     Name VARCHAR(30),
-    Description VARCHAR(150),
-    Price DECIMAL,
+    Description VARCHAR(250),
+    Price DECIMAL(10,2),
     AvailableOptionsCount SMALLINT,
     IsAvailable BOOLEAN,
 
@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS MenuItem(
 CREATE TABLE IF NOT EXISTS MenuItemOption(
     MenuItemOptionId BIGINT not null auto_increment,
     MenuItemId BIGINT,
-    Name VARCHAR(30),
+    Name VARCHAR(30),    
+    AvailableOptionValuesCount SMALLINT,
 
     PRIMARY KEY(MenuItemOptionId),
     FOREIGN KEY(MenuItemId) REFERENCES MenuItem(MenuItemId)
@@ -57,7 +58,7 @@ CREATE TABLE IF NOT EXISTS MenuItemOptionValue(
     MenuItemOptionValueId BIGINT not null auto_increment,
     MenuItemOptionId BIGINT,
     Name VARCHAR(30),   
-    Price DECIMAL,
+    Price DECIMAL(10,2),
 
     PRIMARY KEY(MenuItemOptionValueId),
     FOREIGN KEY(MenuItemOptionId) REFERENCES MenuItemOption(MenuItemOptionId)
@@ -84,7 +85,7 @@ CREATE TABLE IF NOT EXISTS Orders(
     CreatedDate TIMESTAMP DEFAULT now(),
     PickupDate TIMESTAMP,
     RestaurantId  VARCHAR(40),
-    Total DECIMAL,
+    Total DECIMAL(10,2),
     Currency VARCHAR(10),
     Notes VARCHAR(100),
 
@@ -94,7 +95,7 @@ CREATE TABLE IF NOT EXISTS Orders(
 CREATE TABLE IF NOT EXISTS OrderItem(
     OrderItemId BIGINT not null auto_increment,
     OrderId BIGINT,
-    ExtraPrice DECIMAL,
+    ExtraPrice DECIMAL(10,2),
     Name VARCHAR(30),
 
     PRIMARY KEY(OrderItemId),

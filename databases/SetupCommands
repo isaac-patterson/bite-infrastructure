@@ -5,7 +5,6 @@ git config user.email "vincentvr3@gmail.com"
 
 git clone https://github.com/veni-nz/infrastructure.git
 
-
 git add .
 git commit -m "decsription of what youve changed"
 git push 
