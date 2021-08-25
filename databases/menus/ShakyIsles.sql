@@ -1,9 +1,9 @@
 INSERT INTO Restaurant (RestaurantId, Name, Description, CountryCode, Address, CreatedDate, Category, LogoIcon, Offer)
-VALUES ("ff61403a-d16e-467c-a8f8-81b465c8b958", 'Shaky Isles', 'Cafe', 'CNTRY/NZ', '2 Alfred Street, Auckland CBD, Auckland 1010', CURRENT_TIMESTAMP, "Cafe", "U+1F35A", 0);
+VALUES ("f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b", 'Shaky Isles', 'Cafe', 'CNTRY/NZ', '2 Alfred Street, Auckland CBD, Auckland 1010', CURRENT_TIMESTAMP, "Cafe", "U+1F35A", 0);
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'ff61403a-d16e-467c-a8f8-81b465c8b958',
+    'f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b',
     'Monday',
     '09:00',
     '17:00',
@@ -12,7 +12,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'ff61403a-d16e-467c-a8f8-81b465c8b958',
+    'f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b',
     'Tuesday',
     '09:00',
     '17:00',
@@ -21,7 +21,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'ff61403a-d16e-467c-a8f8-81b465c8b958',
+    'f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b',
     'Wednesday',
     '09:00',
     '17:00',
@@ -30,7 +30,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'ff61403a-d16e-467c-a8f8-81b465c8b958',
+    'f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b',
     'Thursday',
     '09:00',
     '17:00',
@@ -39,7 +39,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'ff61403a-d16e-467c-a8f8-81b465c8b958',
+    'f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b',
     'Friday',
     '09:00',
     '17:00',
@@ -48,7 +48,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'ff61403a-d16e-467c-a8f8-81b465c8b958',
+    'f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b',
     'Saturday',
     '09:00',
     '17:00',
@@ -57,7 +57,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'ff61403a-d16e-467c-a8f8-81b465c8b958',
+    'f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b',
     'Sunday',
     '09:00',
     '17:00',
@@ -66,7 +66,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     'Short Black',
     4.0, 
@@ -76,7 +76,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     'Long Black',
     4.0, 
@@ -86,7 +86,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     'Short Macchiato',
     4.0, 
@@ -96,7 +96,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     'Long Macchiato Black',
     4.0, 
@@ -106,7 +106,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     'Piccolo',
     4.0, 
@@ -116,7 +116,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     "Whittaker's Hot Chocoalte",
     5.8, 
@@ -126,7 +126,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     "Whittaker's Mochaccino",
     5.8, 
@@ -137,7 +137,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     'Flat White', 
     4.5, 
@@ -160,7 +160,7 @@ VALUES (37, 'Large', 0.7);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     'Cappuccino', 
     4.5, 
@@ -183,7 +183,7 @@ VALUES (38, 'Large', 0.7);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     'Latte', 
     4.8, 
@@ -200,7 +200,7 @@ VALUES (39, 'Large', 0.4);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Espresso', 
     'Chai Latte', 
     4.8, 
@@ -220,7 +220,7 @@ VALUES (40, 'Large', 0.4);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Special Coffees', 
     'Shaky Home Brew', 
     "Our very own coffee theremoses filled with the best quality single origin filter coffee available. Not that bitter office stuff, this is the real deal!",
@@ -241,7 +241,7 @@ VALUES (41, 'Bottomless', 1.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Special Coffees', 
     'Single Origin Syphon', 
     "Vavvum brewed... it's science",
@@ -252,7 +252,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Special Coffees', 
     'Bulletproof coffee', 
     "Our very own coffee theremoses filled with the best quality single origin filter coffee available. Not that bitter office stuff, this is the real deal!",
@@ -263,7 +263,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Special Coffees', 
     'Single Origin Cold Drip', 
     "Brewed for over 8 hours, smooth and flavoursome.",
@@ -274,7 +274,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Special Coffees', 
     'Single Origin Aeropress', 
     "A smooth, bitter free ride",
@@ -285,7 +285,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Keri Keri Organic Tea', 
     'Manuka + Mint', 
     "A soothing, naturally cafeine free blend of organic spearmint and native manuka leaf",
@@ -296,7 +296,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Keri Keri Organic Tea', 
     'Bay of Islands Breakfast', 
     "An extra-strong blend of superior organic and fair trade black teas from India and Sri Lanka",
@@ -307,7 +307,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Keri Keri Organic Tea', 
     'Chamomile + Cinnamon', 
     "A relaxing, naturally caffeine free infusion of organic whole chamomile flowers and cinnamon flakes",
@@ -318,7 +318,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Keri Keri Organic Tea', 
     'Royal Earl grey', 
     "A premium full-leaf organic fair trade darjeeling tea with bergamot oil for a citrus note",
@@ -329,7 +329,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Keri Keri Organic Tea', 
     'Jasmine Green', 
     "Full leaf organic fair trade green darjeeling blended wth cerfified jasmine oils",
@@ -340,7 +340,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Keri Keri Organic Tea', 
     'Honey Bush', 
     "A naturally cafffeine free sweet South African honeybust high in antioxidants",
@@ -351,7 +351,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Keri Keri Organic Tea', 
     'Pomegradnate + Manuka', 
     "Fine cut organic fair trade white Indian tea blended with pomegranate and native Manuka leaf",
@@ -362,7 +362,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Smoothies', 
     'Orange Reviver', 
     "Carrot, ginger, mango, lime, orange juice",
@@ -373,7 +373,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Smoothies', 
     'Green Detox', 
     "Kale, mint, banana, lime, coconut water",
@@ -384,7 +384,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Smoothies', 
     'Coffee Bost', 
     "Peanut butter, vanilla, double shot coffee, banana, maple syrup, almond milk",
@@ -395,7 +395,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Smoothies', 
     'Berry Bright', 
     "Raspberry, blueberry, mint, maple syrup, banana, coconut milk",
@@ -406,7 +406,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Iced Drinks', 
     'Iced Chocolate', 
     6, 
@@ -416,7 +416,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Iced Drinks', 
     'Iced Coffee', 
     6.7, 
@@ -426,7 +426,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Iced Drinks', 
     'Iced Mocha', 
     'w kapati ice cream',
@@ -437,7 +437,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Iced Drinks', 
     'Affogato',
     'w Kapati Vanilla Bean ice cream',
@@ -448,7 +448,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'MilkShakes', 
     'Banana',
     6.5, 
@@ -458,7 +458,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'MilkShakes', 
     'Caramel',
     6.5, 
@@ -468,7 +468,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'MilkShakes', 
     'Chocolate',
     6.5, 
@@ -478,7 +478,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'MilkShakes', 
     'Lime',
     6.5, 
@@ -488,7 +488,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'MilkShakes', 
     'Strawberry',
     6.5, 
@@ -498,7 +498,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'MilkShakes', 
     'Vanilla',
     6.5, 
@@ -508,7 +508,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Other Drinks', 
     'Orange Juice',
     4, 
@@ -518,7 +518,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Other Drinks', 
     'Apple Juice',
     4, 
@@ -528,7 +528,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Good', 
     'Antioxidant Acai Bowl',
     'Acai, banana, blueberries, strawberries and coconut milk blended to perfection then topped with crunchy granola, chia seeds and fresh fruit', 
@@ -539,7 +539,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Good', 
     'Super Grains Granola',
     'With rhubarb coconut yoghurt topped with dried raspberries',
@@ -560,7 +560,7 @@ VALUES (42, 'Milk', 0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Good', 
     'Persian Barley Porridge',
     'With stewed apple and pear compote topped with toasted smahed almonds', 
@@ -571,7 +571,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Toast',
     'With Butter and preserves',
@@ -595,7 +595,7 @@ VALUES (43, 'Croissant', 0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Free Range Eggs on Toast',
     13, 
@@ -627,7 +627,7 @@ VALUES (44, 'Fried', 0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Free Range Eggs and Soldiers',
     'Soft boil eggs and danish rye soldiers',
@@ -639,7 +639,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Ricotta Hotcakes',
     'Lemon curd, coconut crispy rice, mascarpone and yuzu meringue',
@@ -650,7 +650,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Bacon Buttie',
     'Toasted soft roll filled with six rashers of streaky bacon, a fried egg and topped rocker fuel sauce and aioli',
@@ -662,7 +662,7 @@ VALUES (
     
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Rosated Pumpkin Wedges',
     'Buffalo ricotta, roasted beetroot, medjooi dates, deep fried tuscan kale, walnut and apple vinaigrette',
@@ -686,7 +686,7 @@ VALUES (45, 'Two Free Range fried eggs', 4.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Huevos Sucios (Dirty Eggs)',
     'Free range fried eggs over tater tots, parmesan cheese and tomatillo salsa, black beans and chipotle mayo, topped with a deep fried nest of enoki mushrooms',
@@ -704,7 +704,7 @@ VALUES (46, 'Chorizo', 4.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Eggs Benedict',
     'Two poached eggs served on out potato and herb waggle rosti, spinach and topped with a rich hollandaise sauce',
@@ -728,7 +728,7 @@ VALUES (47, 'Hot smoked salmon', 21);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Isles have it all',
     'Eggs your way, chorizo, streaky bacon, slkow roasted vine tomatoes, garlic and herb portobello mushrooms on a potato and herb waffle rosti with farm house chutney',
@@ -752,7 +752,7 @@ VALUES (48, 'Fried', 0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Breakfast', 
     'Isles Vege it all',
     'Eggs your way, halloumi, slow roasted bine tomatoes, garic and herb portobello mushrooms, sauteed spinach on praro and herb waffle rosti with farmhouse chutney',
@@ -776,7 +776,7 @@ VALUES (49, 'Fried', 0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Brunch', 
     'Breakfast Salad',
     'Baby spinach and Israeli couscous mixed with cherry tomatoes and cucumbers seasoned with parsely, mint, lemon and basamic vinaigrette topped with charred sunflower seeds and a poached free range egg',
@@ -797,7 +797,7 @@ VALUES (50, 'Hot Smoked Salmon', 5.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Brunch', 
     'Street Corn Fritters',
     "Our chefs own sweet corn fritter recipe topped with avocado matonnaise, pico de gallo salsa with jalapenos",
@@ -819,7 +819,7 @@ VALUES (51, 'Hot Smoked Salmon', 2);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Brunch', 
     'Halloumi+Avocado Waffle Rosti',
     'Potato garlic and thyme waffle rosti served with avacado, sauteed spinach and slow roasted vine tomatoes with a salsa rosa dressing and smoked yoghurt',
@@ -831,7 +831,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Brunch', 
     'Fried Chicken Burger',
     "Cornflake crumbed chicken breast and iceberg lettuce on a toasted burger bun topped with mint dill matonnaise and Huffman's hotsauce",
@@ -842,7 +842,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Brunch', 
     'Fried Chicken and Waffles',
     "Huffman's hotsauce cornflake crumbed fried chicken, whipped chipotle butter with maple syrup",
@@ -853,7 +853,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Brunch', 
     'LA Street Dog',
     "Hot dog wrapped in bacon and loaded with onion, peppers, pico de gallo with jalapenos, matonnaise and KAmerican mustard served in a long bun",
@@ -864,7 +864,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Free-Range Egg',
     3, 
@@ -874,7 +874,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Streaky Bacon',
     4.5, 
@@ -884,7 +884,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Chorizon Sausage',
     4.5, 
@@ -894,7 +894,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Mushrooms',
     4.5, 
@@ -904,7 +904,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Roasted Tomato',
     4, 
@@ -914,7 +914,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Spinach',
     3.5, 
@@ -924,7 +924,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Curley Fries',
     6.5, 
@@ -934,7 +934,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Hot Smoked Salmon',
     6.5, 
@@ -944,7 +944,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Potato and Herb Waffle Rosti',
     3.5, 
@@ -954,7 +954,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Price, CreatedDate, IsAvailable)
 VALUES (
-    "ff61403a-d16e-467c-a8f8-81b465c8b958",
+    "f358d3c1-ff9b-4e8b-944f-0dfd9cd1e59b",
     'Sides', 
     'Grilled Halloumi',
     6, 

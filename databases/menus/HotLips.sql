@@ -1,9 +1,9 @@
 INSERT INTO Restaurant (RestaurantId, Name, Description, CountryCode, Address, CreatedDate, Category, LogoIcon, Offer)
-VALUES ("e800408a-459c-43dc-9453-7566878dbeae", 'Hot Lips', 'Nashville Southern Chicken', 'CNTRY/NZ', '34 Princes Street, Auckland CBD, Auckland 1010', CURRENT_TIMESTAMP, "American", "U+1F35A", 0.1);
+VALUES ("0db58bf5-9657-4bbe-bc2a-b70e7a88447c", 'Hot Lips', 'Nashville Southern Chicken', 'CNTRY/NZ', '34 Princes Street, Auckland CBD, Auckland 1010', CURRENT_TIMESTAMP, "American", "U+1F35A", 0.1);
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'e800408a-459c-43dc-9453-7566878dbeae',
+    '0db58bf5-9657-4bbe-bc2a-b70e7a88447c',
     'Monday',
     '09:00',
     '17:00',
@@ -12,7 +12,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'e800408a-459c-43dc-9453-7566878dbeae',
+    '0db58bf5-9657-4bbe-bc2a-b70e7a88447c',
     'Tuesday',
     '09:00',
     '17:00',
@@ -21,7 +21,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'e800408a-459c-43dc-9453-7566878dbeae',
+    '0db58bf5-9657-4bbe-bc2a-b70e7a88447c',
     'Wednesday',
     '09:00',
     '17:00',
@@ -30,7 +30,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'e800408a-459c-43dc-9453-7566878dbeae',
+    '0db58bf5-9657-4bbe-bc2a-b70e7a88447c',
     'Thursday',
     '09:00',
     '17:00',
@@ -39,7 +39,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'e800408a-459c-43dc-9453-7566878dbeae',
+    '0db58bf5-9657-4bbe-bc2a-b70e7a88447c',
     'Friday',
     '09:00',
     '17:00',
@@ -48,7 +48,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'e800408a-459c-43dc-9453-7566878dbeae',
+    '0db58bf5-9657-4bbe-bc2a-b70e7a88447c',
     'Saturday',
     '09:00',
     '17:00',
@@ -57,7 +57,7 @@ VALUES (
 
 INSERT INTO RestaurantOpenDays (RestaurantId, Day, OpenTime, CloseTime, IsOpen)
 VALUES (
-    'e800408a-459c-43dc-9453-7566878dbeae',
+    '0db58bf5-9657-4bbe-bc2a-b70e7a88447c',
     'Sunday',
     '09:00',
     '17:00',
@@ -67,7 +67,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "e800408a-459c-43dc-9453-7566878dbeae",
+    "0db58bf5-9657-4bbe-bc2a-b70e7a88447c",
     'Meals', 
     'Loaded Fries Meal', 
     'NZ Crinkle cut fries loaded with hot Cauli, vegan ranch, slaw, step sauce and dill pickles', 
@@ -116,7 +116,7 @@ VALUES (27, 'Add Seasoned Fries', 1.0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "e800408a-459c-43dc-9453-7566878dbeae",
+    "0db58bf5-9657-4bbe-bc2a-b70e7a88447c",
     'Meals', 
     'HOT CAULI NUG MEAL', 
     'Locally grown free range hot cauli served with fries, vegan ranch and step sauce', 
@@ -168,7 +168,7 @@ VALUES (30, 'Add Seasoned Fries', 1.0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "e800408a-459c-43dc-9453-7566878dbeae",
+    "0db58bf5-9657-4bbe-bc2a-b70e7a88447c",
     'Meals', 
     'HOT CAULI ROLL MEAL', 
     'A warm split bun with slaw, locally grown free-range hot cauli, dill pickles, fries and step sauce', 
@@ -217,7 +217,7 @@ VALUES (33, 'Add Seasoned Fries', 1.0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "e800408a-459c-43dc-9453-7566878dbeae",
+    "0db58bf5-9657-4bbe-bc2a-b70e7a88447c",
     'SIDES & ADD ONS', 
     'Side Salad', 
     'Salad!', 
@@ -228,7 +228,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "e800408a-459c-43dc-9453-7566878dbeae",
+    "0db58bf5-9657-4bbe-bc2a-b70e7a88447c",
     'SIDES & ADD ONS', 
     'Seasoned Fries', 
     'Yummy seasoned fries!', 
@@ -267,7 +267,7 @@ VALUES (35, 'Ketchup (American Style)', 0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "e800408a-459c-43dc-9453-7566878dbeae",
+    "0db58bf5-9657-4bbe-bc2a-b70e7a88447c",
     'SIDES & ADD ONS', 
     'Hot Nugs', 
     '', 
@@ -278,7 +278,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
-    "e800408a-459c-43dc-9453-7566878dbeae",
+    "0db58bf5-9657-4bbe-bc2a-b70e7a88447c",
     'SIDES & ADD ONS', 
     'Fries ', 
     '', 
@@ -306,7 +306,7 @@ VALUES (36, 'Flamin Lips (Super Hot)', 0);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "e800408a-459c-43dc-9453-7566878dbeae",
+    "0db58bf5-9657-4bbe-bc2a-b70e7a88447c",
     'SIDES & ADD ONS', 
     'Fried Pickles ', 
     '', 
@@ -316,7 +316,7 @@ VALUES (
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, IsAvailable)
 VALUES (
-    "e800408a-459c-43dc-9453-7566878dbeae",
+    "0db58bf5-9657-4bbe-bc2a-b70e7a88447c",
     'SIDES & ADD ONS', 
     'Karma Can ', 
     '', 

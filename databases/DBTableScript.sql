@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS Orders(
     Total DECIMAL(10,2),
     Currency VARCHAR(10),
     Notes VARCHAR(100),
+    CouponId BIGINT,
 
     PRIMARY KEY(OrderId)
 );
@@ -95,7 +96,7 @@ CREATE TABLE IF NOT EXISTS Orders(
 CREATE TABLE IF NOT EXISTS OrderItem(
     OrderItemId BIGINT not null auto_increment,
     OrderId BIGINT,
-    ExtraPrice DECIMAL(10,2),
+    Price DECIMAL(10,2),
     Name VARCHAR(30),
 
     PRIMARY KEY(OrderItemId),
