@@ -77,6 +77,18 @@ CREATE TABLE IF NOT EXISTS User(
     PRIMARY KEY(CognitoUserId)
 );
 
+
+CREATE TABLE IF NOT EXISTS Friendship(
+    RequesterCognitoUserId VARCHAR(40) NOT NULL,
+    ReceiverCognitoUserId VARCHAR(40) NOT NULL, 
+    CreatedDate TIMESTAMP DEFAULT now(),
+    Status VARCHAR(30),
+    
+    PRIMARY KEY (RequesterCognitoUserId, ReceiverCognitoUserId),
+    FOREIGN KEY (RequesterCognitoUserId) REFERENCES User(CognitoUserId),
+    FOREIGN KEY (ReceiverCognitoUserId) REFERENCES User(CognitoUserId)
+);
+
 CREATE TABLE IF NOT EXISTS Orders(
     OrderId BIGINT not null auto_increment,
     CognitoUserId  VARCHAR(40),
@@ -108,7 +120,8 @@ CREATE TABLE IF NOT EXISTS OrderItemOption(
     OrderItemId BIGINT,
     Name VARCHAR(50),
     Value VARCHAR(50),
- 
+    Price DECIMAL(10,2),
+
     PRIMARY KEY(OrderItemOptionId),
     FOREIGN KEY(OrderItemId) REFERENCES OrderItem(OrderItemId)
 );

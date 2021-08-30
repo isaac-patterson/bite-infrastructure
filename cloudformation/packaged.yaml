@@ -90,7 +90,7 @@ Resources:
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/6bb59fe0b16dfc24eaf4dfb3588b5e2b.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/8c1d296e44f31f7e5190354751262c5e.template
       Parameters:
         Stage:
           Ref: Stage
@@ -129,10 +129,14 @@ Resources:
         PathPattern: /user/*
         DesiredTaskCount: 1
         ListnerRulePriority: 1
+        SNSServiceCountAlarmTopic:
+          Fn::GetAtt:
+          - ChatbotStack
+          - Outputs.SNSServiceCountAlarmTopic
   RetailBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/6bb59fe0b16dfc24eaf4dfb3588b5e2b.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/8c1d296e44f31f7e5190354751262c5e.template
       Parameters:
         Stage:
           Ref: Stage
@@ -171,10 +175,21 @@ Resources:
         PathPattern: /retail/*
         DesiredTaskCount: 1
         ListnerRulePriority: 2
+        SNSServiceCountAlarmTopic:
+          Fn::GetAtt:
+          - ChatbotStack
+          - Outputs.SNSServiceCountAlarmTopic
   CognitoStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/a8df6830a9cb44b532c8f397607f0dd2.template
+      Parameters:
+        Stage:
+          Ref: Stage
+  ChatbotStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/80bc97732ca03aae111104664b2ed3ea.template
       Parameters:
         Stage:
           Ref: Stage

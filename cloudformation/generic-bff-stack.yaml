@@ -33,6 +33,8 @@ Parameters:
     Type: String
   ListnerRulePriority:
     Type: String
+  SNSServiceCountAlarmTopic:
+    Type: String
 
 Resources:
   #Service task definition
@@ -170,6 +172,7 @@ Resources:
                   - 'elasticloadbalancing:RegisterInstancesWithLoadBalancer'
                   - 'elasticloadbalancing:RegisterTargets'
                 Resource: '*'
+  
   ECSTaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -194,11 +197,32 @@ Resources:
                 - 'logs:CreateLogStream'
                 - 'logs:PutLogEvents'
               Resource: '*'
+  
   ECSLogGroup:
     Type: AWS::Logs::LogGroup
     Properties: 
       LogGroupName: !Sub ${StackName}-awslogs
       RetentionInDays: 30
+
+  #Alarm which triggers slack message
+  ServiceCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+        MetricName: CPUUtilization
+        Namespace: AWS/ECS
+        Statistic: SampleCount
+        Period: 60
+        EvaluationPeriods: 1
+        Threshold: !Ref DesiredTaskCount
+        ComparisonOperator: LessThanThreshold
+        TreatMissingData: breaching
+        Dimensions:
+          - Name: ClusterName
+            Value: !Ref ECSCluster
+          - Name: ServiceName
+            Value: !Sub ${StackName}-${ServiceName}-service
+        AlarmActions:
+          - !Ref SNSServiceCountAlarmTopic
   
   #Deployment Pipeline
   ECRRepository: 

@@ -82,7 +82,7 @@ Resources:
         PathPattern: /user/*
         DesiredTaskCount: 1 #place to 0 if there is no image in the ecr repository yet
         ListnerRulePriority: 1
-
+        SNSServiceCountAlarmTopic: !GetAtt ChatbotStack.Outputs.SNSServiceCountAlarmTopic
 
   RetailBFFStack:
     Type: AWS::CloudFormation::Stack
@@ -104,6 +104,7 @@ Resources:
         PathPattern: /retail/*
         DesiredTaskCount: 1 #place to 0 if there is no image in the ecr repository yet
         ListnerRulePriority: 2
+        SNSServiceCountAlarmTopic: !GetAtt ChatbotStack.Outputs.SNSServiceCountAlarmTopic
 
   CognitoStack:
     Type: AWS::CloudFormation::Stack
@@ -112,5 +113,11 @@ Resources:
       Parameters: 
         Stage: !Ref Stage
 
+  ChatbotStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: chatbot-configs-stack.yaml
+      Parameters: 
+        Stage: !Ref Stage
 
 
