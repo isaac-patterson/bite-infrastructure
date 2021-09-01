@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS OrderItemOption(
 
 CREATE TABLE IF NOT EXISTS Coupon(
     CouponId BIGINT not null auto_increment,
-    RestaurantId  VARCHAR(40),
+    RestaurantId VARCHAR(40),
     CreatedDate TIMESTAMP DEFAULT now(),
     ExpiryDate TIMESTAMP,
     Discount DECIMAL,
@@ -141,21 +141,26 @@ CREATE TABLE IF NOT EXISTS Coupon(
 
 CREATE TABLE IF NOT EXISTS GiftWallet(
     GiftId BIGINT not null auto_increment,
-    ReceiverCognitoId  VARCHAR(40),
-    SenderCognitoId  VARCHAR(40),
+    RestaurantId VARCHAR(40),
+    ReceiverCognitoId VARCHAR(40),
+    SenderCognitoId VARCHAR(40),
     MenuItemId BIGINT,
     GiftType VARCHAR(50),
     Status VARCHAR(20),
     SentDate TIMESTAMP default now(),
     SpentDate TIMESTAMP,
+    GiftMessage VARCHAR(100),
 
-    PRIMARY KEY(GiftId)
+    PRIMARY KEY(GiftId),
+    FOREIGN KEY(ReceiverCognitoId) REFERENCES User(CognitoUserId),
+    FOREIGN KEY(SenderCognitoId) REFERENCES User(CognitoUserId),
+    FOREIGN KEY(MenuItemId) REFERENCES MenuItem(MenuItemId)
 );
 
 CREATE TABLE IF NOT EXISTS Charge(
     Id VARCHAR(50),
     OrderId BIGINT,
-    SenderCognitoId  VARCHAR(40),
+    SenderCognitoId VARCHAR(40),
     Object VARCHAR(20),
     Amount DECIMAL,
     AmountCaptured DECIMAL,
@@ -189,7 +194,7 @@ CREATE TABLE IF NOT EXISTS Charge(
 
 CREATE TABLE IF NOT EXISTS Refund(
     OrderId BIGINT,
-    SenderCognitoId  VARCHAR(40),
+    SenderCognitoId VARCHAR(40),
     Id VARCHAR(50),
     Object VARCHAR(50),
     Amount DECIMAL,
@@ -207,7 +212,7 @@ CREATE TABLE IF NOT EXISTS Refund(
 
 CREATE TABLE IF NOT EXISTS CardToken(
     CardTokenId	BIGINT(20) not null auto_increment,
-    CognitoUserId  VARCHAR(40),
+    CognitoUserId VARCHAR(40),
     CustomerId VARCHAR(100),
     Brand VARCHAR(50),
     Last4Digit VARCHAR(10),
