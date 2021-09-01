@@ -96,11 +96,13 @@ CREATE TABLE IF NOT EXISTS Orders(
     Status VARCHAR(10),
     CreatedDate TIMESTAMP DEFAULT now(),
     PickupDate TIMESTAMP,
+    PickedupDate TIMESTAMP,
     RestaurantId  VARCHAR(40),
     Total DECIMAL(10,2),
     Currency VARCHAR(10),
     Notes VARCHAR(100),
     CouponId BIGINT,
+    Paid BOOLEAN,
 
     PRIMARY KEY(OrderId)
 );
