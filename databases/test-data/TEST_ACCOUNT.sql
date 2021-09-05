@@ -75,64 +75,64 @@ VALUES (
     CURRENT_TIMESTAMP,
     4,
     True
-    );
+    ); 
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (1, 'Base', 1);
+VALUES (89, 'Base', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (1, 'Leaves & rice', 0);
+VALUES (53, 'Leaves & rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (1, 'Rice', 0);
+VALUES (53, 'Rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (1, 'Leaves', 0);
+VALUES (53, 'Leaves', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (1, 'Protein', 1);
+VALUES (89, 'Protein', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (2, 'Ora king salmon', 5.5);
+VALUES (54, 'Ora king salmon', 5.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (2, 'NON-GMO organic tofu', 3.5);
+VALUES (54, 'NON-GMO organic tofu', 3.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (2, 'Free range chicken', 4.5);
+VALUES (54, 'Free range chicken', 4.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (2, 'Yellow fin tuna', 5.5);
+VALUES (54, 'Yellow fin tuna', 5.5);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (1, 'Add ons', 4);
+VALUES (89, 'Add ons', 4);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (3, 'Dashi soup', 3);
+VALUES (55, 'Dashi soup', 3);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (3, 'Tobiko', 2);
+VALUES (55, 'Tobiko', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (3, 'Spicy tuna', 2);
+VALUES (55, 'Spicy tuna', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (3, 'Avocado', 2);
+VALUES (55, 'Avocado', 2);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (1, 'Extra Poke', 4);
+VALUES (89, 'Extra Poke', 4);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (4, 'Extra Ora king salmon', 5.5);
+VALUES (56, 'Extra Ora king salmon', 5.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (4, 'Extra tofu', 3.5);
+VALUES (56, 'Extra tofu', 3.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (4, 'Extra teriyaki', 4.5);
+VALUES (56, 'Extra teriyaki', 4.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (4, 'Extra tuna', 5.5);
+VALUES (56, 'Extra tuna', 5.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
@@ -147,61 +147,61 @@ VALUES (
     );
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (2, 'Base', 1);
+VALUES (90, 'Base', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (5, 'Leaves & rice', 0);
+VALUES (57, 'Leaves & rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (5, 'Rice', 0);
+VALUES (57, 'Rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (5, 'Leaves', 0);
+VALUES (57, 'Leaves', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (2, 'Protein', 1);
+VALUES (90, 'Protein', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (6, 'Ora king salmon', 5.5);
+VALUES (58, 'Ora king salmon', 5.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (6, 'NON-GMO organic tofu', 3.5);
+VALUES (58, 'NON-GMO organic tofu', 3.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (6, 'Free range chicken', 4.5);
+VALUES (58, 'Free range chicken', 4.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (6, 'Yellow fin tuna', 5.5);
+VALUES (58, 'Yellow fin tuna', 5.5);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (2, 'Add ons', 4);
+VALUES (90, 'Add ons', 4);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (7, 'Dashi soup', 3);
+VALUES (59, 'Dashi soup', 3);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (7, 'Tobiko', 2);
+VALUES (59, 'Tobiko', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (7, 'Spicy tuna', 2);
+VALUES (59, 'Spicy tuna', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (7, 'Avocado', 2);
+VALUES (59, 'Avocado', 2);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (2, 'Extra Poke', 4);
+VALUES (90, 'Extra Poke', 4);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (8, 'Extra Ora king salmon', 5.5);
+VALUES (60, 'Extra Ora king salmon', 5.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (8, 'Extra tofu', 3.5);
+VALUES (60, 'Extra tofu', 3.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (8, 'Extra teriyaki', 4.5);
+VALUES (60, 'Extra teriyaki', 4.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (8, 'Extra tuna', 5.5);
+VALUES (60, 'Extra tuna', 5.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
@@ -215,61 +215,61 @@ VALUES (
     True);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (3, 'Base', 1);
+VALUES (91, 'Base', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (9, 'Leaves & rice', 0);
+VALUES (61, 'Leaves & rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (9, 'Rice', 0);
+VALUES (61, 'Rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (9, 'Leaves', 0);
+VALUES (61, 'Leaves', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (3, 'Protein', 1);
+VALUES (91, 'Protein', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (10, 'Ora king salmon', 5.5);
+VALUES (62, 'Ora king salmon', 5.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (10, 'NON-GMO organic tofu', 3.5);
+VALUES (62, 'NON-GMO organic tofu', 3.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (10, 'Free range chicken', 4.5);
+VALUES (62, 'Free range chicken', 4.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (10, 'Yellow fin tuna', 5.5);
+VALUES (62, 'Yellow fin tuna', 5.5);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (3, 'Add ons', 4);
+VALUES (91, 'Add ons', 4);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (11, 'Dashi soup', 3);
+VALUES (63, 'Dashi soup', 3);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (11, 'Tobiko', 2);
+VALUES (63, 'Tobiko', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (11, 'Spicy tuna', 2);
+VALUES (63, 'Spicy tuna', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (11, 'Avocado', 2);
+VALUES (63, 'Avocado', 2);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (3, 'Extra Poke', 4);
+VALUES (91, 'Extra Poke', 4);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (12, 'Extra Ora king salmon', 5.5);
+VALUES (64, 'Extra Ora king salmon', 5.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (12, 'Extra tofu', 3.5);
+VALUES (64, 'Extra tofu', 3.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (12, 'Extra teriyaki', 4.5);
+VALUES (64, 'Extra teriyaki', 4.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (12, 'Extra tuna', 5.5);
+VALUES (64, 'Extra tuna', 5.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
@@ -284,61 +284,61 @@ VALUES (
     );
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (4, 'Base', 1);
+VALUES (92, 'Base', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (13, 'Leaves & rice', 0);
+VALUES (65, 'Leaves & rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (13, 'Rice', 0);
+VALUES (65, 'Rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (13, 'Leaves', 0);
+VALUES (65, 'Leaves', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (4, 'Protein', 1);
+VALUES (92, 'Protein', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (14, 'Ora king salmon', 5.5);
+VALUES (66, 'Ora king salmon', 5.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (14, 'NON-GMO organic tofu', 3.5);
+VALUES (66, 'NON-GMO organic tofu', 3.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (14, 'Free range chicken', 4.5);
+VALUES (66, 'Free range chicken', 4.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (14, 'Yellow fin tuna', 5.5);
+VALUES (66, 'Yellow fin tuna', 5.5);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (4, 'Add ons', 4);
+VALUES (92, 'Add ons', 4);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (15, 'Dashi soup', 3);
+VALUES (67, 'Dashi soup', 3);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (15, 'Tobiko', 2);
+VALUES (67, 'Tobiko', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (15, 'Spicy tuna', 2);
+VALUES (67, 'Spicy tuna', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (15, 'Avocado', 2);
+VALUES (67, 'Avocado', 2);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (4, 'Extra Poke', 4);
+VALUES (92, 'Extra Poke', 4);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (16, 'Extra Ora king salmon', 5.5);
+VALUES (68, 'Extra Ora king salmon', 5.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (16, 'Extra tofu', 3.5);
+VALUES (68, 'Extra tofu', 3.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (16, 'Extra teriyaki', 4.5);
+VALUES (68, 'Extra teriyaki', 4.5);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (16, 'Extra tuna', 5.5);
+VALUES (68, 'Extra tuna', 5.5);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
@@ -353,25 +353,25 @@ VALUES (
     );
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (5, 'Base', 1);
+VALUES (93, 'Base', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (17, 'Coconut rice', 0);
+VALUES (69, 'Coconut rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (17, 'Porridge', 0);
+VALUES (69, 'Porridge', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (17, 'Coconut sticky rice', 0);
+VALUES (69, 'Coconut sticky rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (17, 'Natural porridge', 0);
+VALUES (69, 'Natural porridge', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (5, 'Add ons', 1);
+VALUES (93, 'Add ons', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (18, 'Acai', 2);
+VALUES (70, 'Acai', 2);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
@@ -386,34 +386,34 @@ VALUES (
     );
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (6, 'Base', 1);
+VALUES (94, 'Base', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (19, 'Coconut rice', 0);
+VALUES (71, 'Coconut rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (19, 'Porridge', 0);
+VALUES (71, 'Porridge', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (19, 'Coconut sticky rice', 0);
+VALUES (71, 'Coconut sticky rice', 0);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (19, 'Natural porridge', 0);
+VALUES (71, 'Natural porridge', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (6, 'Add ons', 1);
+VALUES (94, 'Add ons', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (20, 'Acai', 2);
+VALUES (72, 'Acai', 2);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (6, 'Extras', 2);
+VALUES (94, 'Extras', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (21, 'Coconut sticky rice', 1);
+VALUES (73, 'Coconut sticky rice', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
-VALUES (21, 'Porridge', 1);
+VALUES (73, 'Porridge', 1);
 
 INSERT INTO MenuItem (RestaurantId, Category, Name, Description, Price, CreatedDate, AvailableOptionsCount, IsAvailable)
 VALUES (
@@ -428,7 +428,7 @@ VALUES (
     );
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (7, 'Base', 1);
+VALUES (95, 'Base', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (22, 'Coconut rice', 0);
@@ -443,13 +443,13 @@ INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (22, 'Natural porridge', 0);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (7, 'Add ons', 1);
+VALUES (95, 'Add ons', 1);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (23, 'Acai', 2);
 
 INSERT INTO MenuItemOption (MenuItemId, Name, AvailableOptionValuesCount)
-VALUES (7, 'Extras', 2);
+VALUES (95, 'Extras', 2);
 
 INSERT INTO MenuItemOptionValue (MenuItemOptionId, Name, Price)
 VALUES (24, 'Coconut sticky rice', 1);

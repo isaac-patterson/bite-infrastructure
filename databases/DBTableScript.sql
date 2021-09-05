@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Restaurant(
     Address VARCHAR(200),
     Category VARCHAR(30),
     LogoIcon VARCHAR(50),
-    Offer DECIMAL(6,5),
+    Offer DECIMAL(6, 5),
 
     PRIMARY KEY(RestaurantId)
     );
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS Coupon(
     RestaurantId VARCHAR(40),
     CreatedDate TIMESTAMP DEFAULT now(),
     ExpiryDate TIMESTAMP,
-    Discount DECIMAL,
+    Discount DECIMAL(6, 5),
     DiscountCode VARCHAR(20),
 
     PRIMARY KEY(CouponId)
