@@ -11,3 +11,6 @@ Fire them at your local DB
 HaPoke
 HotLips
 ShakyIsles
+
+cognito user userpool test account f9222e77-954c-4d3a-a54a-9831c90433c6
+cognito retail userpool test account 1c190c08-a3db-4103-8e85-cb17679b5777

@@ -35,3 +35,9 @@ Deploys the differences between local root-stack.yaml and the latest deployed ro
 # Notes
 
 Never manually delete resources through the aws ui, always comment out relevant code and then update the stack. Otherwise youll have to redeploy the whole stack
+
+
+
+PRE SETUP
+
+create ec2 instance key

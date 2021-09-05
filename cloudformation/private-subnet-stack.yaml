@@ -30,6 +30,8 @@ Parameters:
   PLBSecurityGroup:
     Type: String
     MinLength: 1
+  BastionHostSecurityGroup:
+    Type: String
 
 Resources:
   ECSSecurityGroup:
@@ -72,37 +74,52 @@ Resources:
 
   #Aurora SQL
   RDSCluster:
-    Properties: 
-      DBClusterParameterGroupName: 
-        Ref: RDSDBClusterParameterGroup
-      Engine: aurora
-      EnableHttpEndpoint: True
-      EngineMode: serverless
-      MasterUserPassword: 
-        Ref: DBPassword
-      MasterUsername: 
-        Ref: DBUser
-      DBClusterIdentifier: !Sub ${StackName}
-      DatabaseName: 
-        Ref: DBName
-      DBSubnetGroupName: 
-        Ref: DBSubnetGroup    
-      Tags:
-        - Key: Name
-          Value: !Sub ${StackName} Aurora Serverless Cluster   
-        - Key: Project
-          Value: .Net Core on AWS          
-      VpcSecurityGroupIds:
-        - Ref: DBSecurityGroup                 
     Type: "AWS::RDS::DBCluster"
     DependsOn: DBSubnetGroup
-  RDSDBClusterParameterGroup: 
+    Properties: 
+      DBClusterParameterGroupName: !Ref DBClusterParameterGroup
+      Engine: aurora
+      EngineMode: provisioned
+      EnableHttpEndpoint: True
+      MasterUserPassword: !Ref DBPassword
+      MasterUsername: !Ref DBUser
+      DBClusterIdentifier: bite-aurora-provisioned-db
+      DatabaseName: !Ref DBName
+      DBSubnetGroupName: !Ref DBSubnetGroup    
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} Aurora Provisioned Cluster   
+        - Key: Project
+          Value: .Net Core on AWS          
+      VpcSecurityGroupIds: 
+        - !Ref DBSecurityGroup                 
+
+  DBClusterParameterGroup: 
+    Type: "AWS::RDS::DBClusterParameterGroup"
     Properties: 
       Description: "CloudFormation Sample Aurora Cluster Parameter Group"
       Family: aurora5.6
       Parameters:
         time_zone: US/Eastern
-    Type: "AWS::RDS::DBClusterParameterGroup"
+
+  DBParameterGroup:
+    Type: 'AWS::RDS::DBParameterGroup'
+    Properties:
+      Description: !Ref 'AWS::StackName'
+      Family: aurora5.6
+
+  BiteDBInstance:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      AllowMajorVersionUpgrade: false
+      AutoMinorVersionUpgrade: true
+      CopyTagsToSnapshot: true
+      DBClusterIdentifier: !Ref RDSCluster
+      DBInstanceClass: db.t2.small
+      DBParameterGroupName: !Ref DBParameterGroup
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      Engine: aurora
+
   DBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties: 
@@ -139,6 +156,17 @@ Resources:
       ToPort: 3306
       SourceSecurityGroupId: !Ref ECSSecurityGroup
 
+  BastionHostIngressTCP:
+    Type: AWS::EC2::SecurityGroupIngress
+    DependsOn: DBSecurityGroup
+    Properties:
+      Description: Ingress 3306 
+      GroupId: !Ref 'DBSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      CidrIp: 10.0.0.186/32
+
   #Amazon Systems Manager
   SystemsManagerBasicParameter:
     Type: "AWS::SSM::Parameter"
@@ -148,12 +176,12 @@ Resources:
       Value: !Join [ "",
           [
             "server=",
-            !Join [ "", [ !GetAtt RDSCluster.Endpoint.Address, "" ] ],
+            !Join [ "", [ !GetAtt BiteDBInstance.Endpoint.Address, "" ] ],
             ";port=",
-            !GetAtt RDSCluster.Endpoint.Port,
-            ";database=", !Join [ "", [ Ref: DBName, "" ] ],
-            ";uid=", !Join [ "", [ Ref: DBUser, "" ] ],
-            ";password=", !Join [ "", [ Ref: DBPassword, "" ] ],
+            !GetAtt BiteDBInstance.Endpoint.Port,
+            ";database=", !Join [ "", [ !Ref DBName, "" ] ],
+            ";uid=", !Join [ "", [ !Ref DBUser, "" ] ],
+            ";password=", !Join [ "", [ !Ref DBPassword, "" ] ],
             ";default command timeout=120",
             ";SSLMode=None"
           ]
@@ -167,7 +195,7 @@ Resources:
     Properties:
       Name: "/Database/Config/DBName"
       Type: "String"
-      Value: !Join [ "", [ Ref: DBName, "" ] ]
+      Value: !Join [ "", [ !Ref DBName, "" ] ]
       Description: "SSM Parameter for maintaining the Aurora DBName."
       Tags:
         "Environment": "DEV"    
@@ -176,7 +204,7 @@ Resources:
     Properties:
       Name: "/Database/Config/DBUser"
       Type: "String"
-      Value: !Join [ "", [ Ref: DBUser, "" ] ]
+      Value: !Join [ "", [ !Ref DBUser, "" ] ]
       Description: "SSM Parameter for maintaining the Aurora DBUser."
       Tags:
         "Environment": "DEV"          
@@ -185,7 +213,7 @@ Resources:
     Properties:
       Name: "/Database/Config/DBPassword"
       Type: "String"
-      Value: !Join [ "", [ Ref: DBPassword, "" ] ]
+      Value: !Join [ "", [ !Ref DBPassword, "" ] ]
       Description: "SSM Parameter for maintaining the Aurora DBPassword."
       Tags:
         "Environment": "DEV"     

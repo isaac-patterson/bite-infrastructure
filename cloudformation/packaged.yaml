@@ -40,7 +40,7 @@ Resources:
   PublicSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/0edeaeccd5013284a117dbab946ad2d5.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/d17172180a1c34c1d668517b68e3f25b.template
       Parameters:
         Stage:
           Ref: Stage
@@ -64,10 +64,11 @@ Resources:
           Fn::GetAtt:
           - VPCStack
           - Outputs.ApiVPC
+        BastionHostKeyName: bite-bastion-host
   PrivateSubnetStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/414784e27c2c44891f2a0f12aa2c3f08.template
+      TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/c0e12a36c6675f1e6e12051c174dcc3e.template
       Parameters:
         Stage:
           Ref: Stage
@@ -87,13 +88,17 @@ Resources:
           Fn::GetAtt:
           - PublicSubnetStack
           - Outputs.PLBSecurityGroup
+        BastionHostSecurityGroup:
+          Fn::GetAtt:
+          - PublicSubnetStack
+          - Outputs.BastionHostSecurityGroup
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/8c1d296e44f31f7e5190354751262c5e.template
       Parameters:
         Stage:
-          Ref: Stage
+          !Ref Stage
         ApiVPC:
           Fn::GetAtt:
           - VPCStack
@@ -139,7 +144,7 @@ Resources:
       TemplateURL: https://s3.us-east-1.amazonaws.com/packaged-templates/8c1d296e44f31f7e5190354751262c5e.template
       Parameters:
         Stage:
-          Ref: Stage
+          !Ref Stage
         ApiVPC:
           Fn::GetAtt:
           - VPCStack
@@ -173,7 +178,7 @@ Resources:
         ServiceName: retail-bff
         DllFile: retail-bff.dll
         PathPattern: /retail/*
-        DesiredTaskCount: 1
+        DesiredTaskCount: 1 
         ListnerRulePriority: 2
         SNSServiceCountAlarmTopic:
           Fn::GetAtt:

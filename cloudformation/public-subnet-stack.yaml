@@ -26,6 +26,8 @@ Parameters:
     Type: String
   ApiVPC:
     Type: String
+  BastionHostKeyName:
+    Type: String
 
 Resources:
   # #Specifies an Elastic IP (EIP) address for natgateway
@@ -55,8 +57,7 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateSubnet1RouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-        Ref: NATGateway1
+      NatGatewayId: !Ref NATGateway1
   
   NATGateway2:
     Type: AWS::EC2::NatGateway
@@ -71,8 +72,7 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateSubnet2RouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-        Ref: NATGateway2
+      NatGatewayId: !Ref NATGateway2
 
   #Acts as a firewall for the PLB, controls both inbound traffic
   PLBSecurityGroup:
@@ -149,6 +149,47 @@ Resources:
                   StatusCode: "HTTP_301"
               Type: "redirect"
 
+  BastionHostSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for bastion host
+      VpcId: !Ref ApiVPC
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} (BastionHostSG)
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          Description: SSH Service port
+          CidrIp: 27.252.220.66/32
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: 0
+          ToPort: 65535
+          Description: All TCP/UDP port opened for bastion host to access external network
+
+  BastionHost:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      InstanceType: t3.micro
+      KeyName: !Ref 'BastionHostKeyName'
+      SecurityGroupIds: 
+        - !Ref 'BastionHostSecurityGroup'
+      ImageId: ami-0ff8a91507f77f867
+      Tenancy: 'default'
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} (BastionHost)
+
+  BastionHostEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: 'vpc'
+      InstanceId: !Ref BastionHost
+
 Outputs:  
   ExternalUrl:
     Description: The url of the external load balancer
@@ -164,4 +205,9 @@ Outputs:
     Description: The ARN of the public load balancer's Listener
     Value: !Ref HTTPSListener
     Export:
-      Name: !Join [':', [ !Ref 'AWS::StackName', 'HTTPSListener' ] ]      
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'HTTPSListener' ] ]
+  BastionHostSecurityGroup:
+    Description: Bastion host security group
+    Value: !Ref BastionHostSecurityGroup
+    Export:
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'BastionHostSecurityGroup' ] ]

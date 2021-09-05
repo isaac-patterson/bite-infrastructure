@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS Restaurant(
     Address VARCHAR(200),
     Category VARCHAR(30),
     LogoIcon VARCHAR(50),
-    Offer DECIMAL,
+    Offer DECIMAL(6,5),
 
     PRIMARY KEY(RestaurantId)
     );
@@ -77,7 +77,6 @@ CREATE TABLE IF NOT EXISTS User(
     PRIMARY KEY(CognitoUserId)
 );
 
-
 CREATE TABLE IF NOT EXISTS Friendship(
     RequesterCognitoUserId VARCHAR(40) NOT NULL,
     ReceiverCognitoUserId VARCHAR(40) NOT NULL, 
@@ -91,18 +90,19 @@ CREATE TABLE IF NOT EXISTS Friendship(
 
 CREATE TABLE IF NOT EXISTS Orders(
     OrderId BIGINT not null auto_increment,
-    CognitoUserId  VARCHAR(40),
-    PickupName  VARCHAR(40),
+    CognitoUserId VARCHAR(40),
+    PickupName VARCHAR(40),
     Status VARCHAR(10),
     CreatedDate TIMESTAMP DEFAULT now(),
     PickupDate TIMESTAMP,
     PickedupDate TIMESTAMP,
-    RestaurantId  VARCHAR(40),
+    RestaurantId VARCHAR(40),
     Total DECIMAL(10,2),
     Currency VARCHAR(10),
     Notes VARCHAR(100),
     CouponId BIGINT,
     Paid BOOLEAN,
+    IsGift BOOLEAN,
 
     PRIMARY KEY(OrderId)
 );
@@ -115,6 +115,17 @@ CREATE TABLE IF NOT EXISTS OrderItem(
 
     PRIMARY KEY(OrderItemId),
     FOREIGN KEY(OrderId) REFERENCES Orders(OrderId)
+);
+
+CREATE TABLE IF NOT EXISTS LoyaltyProgram(
+    CognitoUserId VARCHAR(40),
+    RestaurantId VARCHAR(40),
+    TokenCount BIGINT,
+    GiftsSpent BIGINT,
+
+    PRIMARY KEY(CognitoUserId, RestaurantId),
+    FOREIGN KEY(CognitoUserId) REFERENCES User(CognitoUserId),
+    FOREIGN KEY(RestaurantId) REFERENCES Restaurant(RestaurantId)
 );
 
 CREATE TABLE IF NOT EXISTS OrderItemOption(
@@ -150,6 +161,7 @@ CREATE TABLE IF NOT EXISTS GiftWallet(
     SentDate TIMESTAMP default now(),
     SpentDate TIMESTAMP,
     GiftMessage VARCHAR(100),
+    ExpiryDate TIMESTAMP,
 
     PRIMARY KEY(GiftId),
     FOREIGN KEY(ReceiverCognitoId) REFERENCES User(CognitoUserId),
