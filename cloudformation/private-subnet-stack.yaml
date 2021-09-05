@@ -30,8 +30,6 @@ Parameters:
   PLBSecurityGroup:
     Type: String
     MinLength: 1
-  BastionHostSecurityGroup:
-    Type: String
 
 Resources:
   ECSSecurityGroup:

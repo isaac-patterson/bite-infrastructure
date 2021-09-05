@@ -50,7 +50,8 @@ Resources:
         PrivateSubnet1RouteTable: !GetAtt VPCStack.Outputs.PrivateSubnet1RouteTable
         PrivateSubnet2RouteTable: !GetAtt VPCStack.Outputs.PrivateSubnet2RouteTable
         ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
-        BastionHostKeyName: bite-bastion-host
+        BastionHostKeyName: bite-bastion-host #ec2 key
+        NATInstanceKeyName: bite-nat-instance #ec2 key
 
   PrivateSubnetStack:
     Type: AWS::CloudFormation::Stack
@@ -62,7 +63,6 @@ Resources:
         PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
         ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
         PLBSecurityGroup: !GetAtt PublicSubnetStack.Outputs.PLBSecurityGroup
-        BastionHostSecurityGroup: !GetAtt PublicSubnetStack.Outputs.BastionHostSecurityGroup
   
   UserBFFStack:
     Type: AWS::CloudFormation::Stack
@@ -121,5 +121,3 @@ Resources:
       TemplateURL: chatbot-configs-stack.yaml
       Parameters: 
         Stage: !Ref Stage
-
-

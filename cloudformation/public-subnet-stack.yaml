@@ -28,6 +28,8 @@ Parameters:
     Type: String
   BastionHostKeyName:
     Type: String
+  NATInstanceKeyName:
+    Type: String
 
 Resources:
   # #Specifies an Elastic IP (EIP) address for natgateway
@@ -149,6 +151,32 @@ Resources:
                   StatusCode: "HTTP_301"
               Type: "redirect"
 
+
+  ###
+  # BASTION HOST
+  # Used for aurora ssh
+  ###
+  
+  BastionHost:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      InstanceType: t3.nano
+      KeyName: !Ref BastionHostKeyName
+      ImageId: ami-0ff8a91507f77f867
+      Tenancy: default
+      SecurityGroupIds: 
+        - !Ref BastionHostSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} Bastion Host
+
+  BastionHostEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: 'vpc'
+      InstanceId: !Ref BastionHost
+
   BastionHostSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -170,25 +198,107 @@ Resources:
           ToPort: 65535
           Description: All TCP/UDP port opened for bastion host to access external network
 
-  BastionHost:
+  ###
+  # NAT INSTANCES
+  # One for each subnet
+  ###
+  NATInstance1:
     Type: AWS::EC2::Instance
     Properties:
       SubnetId: !Ref PublicSubnet1
-      InstanceType: t3.micro
-      KeyName: !Ref 'BastionHostKeyName'
-      SecurityGroupIds: 
-        - !Ref 'BastionHostSecurityGroup'
-      ImageId: ami-0ff8a91507f77f867
-      Tenancy: 'default'
+      InstanceType: t3.nano
+      KeyName: !Ref NATInstanceKeyName
+      ImageId: ami-00a36856283d67c39 #community nat instance ami
+      SourceDestCheck: False
+      IamInstanceProfile: !Ref InstanceProfile
+      SecurityGroupIds:
+        - !Ref NATInstanceSecurityGroup
       Tags:
         - Key: Name
-          Value: !Sub ${StackName} (BastionHost)
+          Value: !Sub ${StackName} NAT Instance 1
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
 
-  BastionHostEIP:
+          sudo apt update -y
+          sudo apt install -y awscli
+          sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          sudo apt install unzip  
+          sudo unzip awscliv2.zip
+          sudo ./aws/install
+
+          sudo apt-get update
+          echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+          echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+          sudo apt-get -y install iptables-persistent
+          echo 1 > /proc/sys/net/ipv4/ip_forward
+
+          sudo sed -i '28s/#//g' /etc/sysctl.conf
+
+          iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+          iptables -t nat -A POSTROUTING -o eth0 -s 0.0.0.0/0 -j MASQUERADE
+
+          iptables -t nat -L
+          netfilter-persistent save
+          cat /etc/iptables/rules.v4
+
+  NATInstance1EIP:
     Type: AWS::EC2::EIP
     Properties:
       Domain: 'vpc'
-      InstanceId: !Ref BastionHost
+      InstanceId: !Ref NATInstance1
+
+  NATInstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: Nat
+      GroupDescription: Open Port 22 for ssh
+      VpcId:
+        Fn::ImportValue: !Sub '${ExportStackName}-LabVPC'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: NAT instance SG
+
+  NATRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: ec2
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Sid: Stmt1425023276000
+              Effect: Allow
+              Action:
+              - 'ec2:AssociateAddress'
+              - 'ec2:ModifyInstanceAttribute'
+              - 'ec2:CreateRoute'
+              - 'ec2:ReplaceRoute'
+              Resource:
+              - '*'
+
+  NATInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles: 
+        - !Ref NATRole
+      InstanceProfileName: NATRole
 
 Outputs:  
   ExternalUrl:
@@ -206,8 +316,3 @@ Outputs:
     Value: !Ref HTTPSListener
     Export:
       Name: !Join [':', [ !Ref 'AWS::StackName', 'HTTPSListener' ] ]
-  BastionHostSecurityGroup:
-    Description: Bastion host security group
-    Value: !Ref BastionHostSecurityGroup
-    Export:
-      Name: !Join [':', [ !Ref 'AWS::StackName', 'BastionHostSecurityGroup' ] ]
