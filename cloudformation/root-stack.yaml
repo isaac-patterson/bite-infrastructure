@@ -63,6 +63,7 @@ Resources:
         PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
         ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
         PLBSecurityGroup: !GetAtt PublicSubnetStack.Outputs.PLBSecurityGroup
+        NATInstanceSecurityGroup: !GetAtt PublicSubnetStack.Outputs.NATInstanceSecurityGroup
   
   UserBFFStack:
     Type: AWS::CloudFormation::Stack

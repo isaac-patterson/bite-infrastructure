@@ -43,10 +43,7 @@ Resources:
       VpcId: !Ref ApiVPC
       CidrBlock:
         !FindInMap ['SubnetConfig', 'PublicOne', 'CIDR']
-      AvailabilityZone:
-         Fn::Select:
-         - 0
-         - Fn::GetAZs: {!Ref 'AWS::Region'}
+      AvailabilityZone: us-east-1a
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -59,10 +56,7 @@ Resources:
       VpcId: !Ref ApiVPC
       CidrBlock:
         !FindInMap ['SubnetConfig', 'PublicTwo', 'CIDR']
-      AvailabilityZone:
-         Fn::Select:
-         - 1
-         - Fn::GetAZs: {!Ref 'AWS::Region'}
+      AvailabilityZone: us-east-1b
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
@@ -76,10 +70,7 @@ Resources:
         !Ref ApiVPC
       CidrBlock:
         !FindInMap ['SubnetConfig', 'PrivateOne', 'CIDR']
-      AvailabilityZone:
-         Fn::Select:
-         - 0
-         - Fn::GetAZs: {!Ref 'AWS::Region'}
+      AvailabilityZone: us-east-1a
       Tags:
         - Key: Name
           Value: !Sub ${StackName} Private Subnet (AZ1)       
@@ -92,10 +83,7 @@ Resources:
         !Ref ApiVPC
       CidrBlock:
         !FindInMap ['SubnetConfig', 'PrivateTwo', 'CIDR']
-      AvailabilityZone:
-         Fn::Select:
-         - 1
-         - Fn::GetAZs: {!Ref 'AWS::Region'}
+      AvailabilityZone: us-east-1b
       Tags:
         - Key: Name
           Value: !Sub ${StackName} Private Subnet (AZ2)       
@@ -127,30 +115,28 @@ Resources:
       VpcId: !Ref ApiVPC
       Tags:
         - Key: Name
-          Value: !Sub ${StackName} Private Route     
-        - Key: Project
-          Value: .Net Core on AWS           
+          Value: !Sub ${StackName} Private Route Table 1  
 
   PrivateSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnet1
       RouteTableId: !Ref PrivateSubnet1RouteTable
+
   PrivateSubnet2RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref ApiVPC
       Tags:
         - Key: Name
-          Value: !Sub ${StackName} Private Route   
-        - Key: Project
-          Value: .Net Core on AWS          
+          Value: !Sub ${StackName} Private Route Table 2
 
   PrivateSubnet2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnet2
       RouteTableId: !Ref PrivateSubnet2RouteTable
+
   #edge assosiation (connected to internet gateway). Allows incoming traffic to subnet
   PublicSubnetRouteTable:
     Type: AWS::EC2::RouteTable
@@ -158,9 +144,10 @@ Resources:
       VpcId: !Ref ApiVPC
       Tags:
         - Key: Name
-          Value: !Sub ${StackName} Public Route        
+          Value: !Sub ${StackName} Public Route Table    
         - Key: Project
-          Value: .Net Core on AWS          
+          Value: .Net Core on AWS        
+
   PublicSubnetRoute:
     Type: AWS::EC2::Route
     DependsOn: VPCGatewayAttachment
@@ -168,11 +155,13 @@ Resources:
       RouteTableId: !Ref PublicSubnetRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref IGW
+
   PublicSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PublicSubnet1
       RouteTableId: !Ref PublicSubnetRouteTable
+
   PublicSubnet2RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:

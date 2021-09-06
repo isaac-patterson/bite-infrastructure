@@ -74,7 +74,7 @@ Resources:
     DependsOn: 
       - LoadBalancerRule
     Properties:
-      ServiceName: !Sub ${StackName}-${ServiceName}-service
+      ServiceName: !Sub ${ServiceName}-service
       Cluster: !Ref ECSCluster
       LaunchType: FARGATE
       DesiredCount: !Ref DesiredTaskCount 
@@ -220,7 +220,7 @@ Resources:
           - Name: ClusterName
             Value: !Ref ECSCluster
           - Name: ServiceName
-            Value: !Sub ${StackName}-${ServiceName}-service
+            Value: !Sub ${ServiceName}-service
         AlarmActions:
           - !Ref SNSServiceCountAlarmTopic
   
@@ -395,7 +395,7 @@ Resources:
                 Provider: ECS
               Configuration:
                 ClusterName: !Ref ECSCluster
-                ServiceName: !Sub ${StackName}-${ServiceName}-service
+                ServiceName: !Sub ${ServiceName}-service
                 FileName: images.json
               InputArtifacts:
                 - Name: BuildOutput

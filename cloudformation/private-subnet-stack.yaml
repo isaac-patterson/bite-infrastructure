@@ -20,16 +20,14 @@ Parameters:
     Type: String
   PrivateSubnet1:
     Type: String
-    MinLength: 1
   PrivateSubnet2:
     Type: String
-    MinLength: 1
   ApiVPC:
     Type: String
-    MinLength: 1
   PLBSecurityGroup:
     Type: String
-    MinLength: 1
+  NATInstanceSecurityGroup:
+    Type: String
 
 Resources:
   ECSSecurityGroup:
@@ -45,12 +43,22 @@ Resources:
   ECSSecurityGroupIngressTCP:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
-      Description: Ingress TCP All Port from ELB SG
+      Description: Ingress TCP All Port from NAT SG
       GroupId: !Ref 'ECSSecurityGroup'
       IpProtocol: tcp
       FromPort: 1
       ToPort: 65535
       SourceSecurityGroupId: !Ref 'PLBSecurityGroup'
+
+  ECSSGNATInstanceIngressTCP:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress TCP All Port from ELB SG
+      GroupId: !Ref 'ECSSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 1
+      ToPort: 65535
+      SourceSecurityGroupId: !Ref 'NATInstanceSecurityGroup'
 
   #ECS Cluster
   ECSCluster:

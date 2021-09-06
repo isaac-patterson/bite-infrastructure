@@ -32,50 +32,6 @@ Parameters:
     Type: String
 
 Resources:
-  # #Specifies an Elastic IP (EIP) address for natgateway
-  NAT1EIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-  #Specifies an Elastic IP (EIP) address for natgateway
-  NAT2EIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-
-  #internet cannot get through NAT gateway explicitily allowed, mostly used for outbound traffic
-  #can be used for other things aswell: eg.  yum updates, external database connections, wget calls, etc
-  #private subnets connected to natgateway
-  NATGateway1:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId:
-        Fn::GetAtt:
-        - NAT1EIP  
-        - AllocationId
-      SubnetId: !Ref PublicSubnet1
-  PrivateSubnetNATGateway1Route:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateSubnet1RouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NATGateway1
-  
-  NATGateway2:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      AllocationId:
-        Fn::GetAtt:
-        - NAT2EIP
-        - AllocationId
-      SubnetId: !Ref PublicSubnet2
-  PrivateSubnetNATGateway2Route:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateSubnet2RouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref NATGateway2
-
   #Acts as a firewall for the PLB, controls both inbound traffic
   PLBSecurityGroup:
       Type: "AWS::EC2::SecurityGroup"
@@ -210,51 +166,60 @@ Resources:
       KeyName: !Ref NATInstanceKeyName
       ImageId: ami-00a36856283d67c39 #community nat instance ami
       SourceDestCheck: False
-      IamInstanceProfile: !Ref InstanceProfile
+      IamInstanceProfile: !Ref NATInstanceProfile
       SecurityGroupIds:
         - !Ref NATInstanceSecurityGroup
       Tags:
         - Key: Name
           Value: !Sub ${StackName} NAT Instance 1
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash
-
-          sudo apt update -y
-          sudo apt install -y awscli
-          sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          sudo apt install unzip  
-          sudo unzip awscliv2.zip
-          sudo ./aws/install
-
-          sudo apt-get update
-          echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
-          echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
-          sudo apt-get -y install iptables-persistent
-          echo 1 > /proc/sys/net/ipv4/ip_forward
-
-          sudo sed -i '28s/#//g' /etc/sysctl.conf
-
-          iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-          iptables -t nat -A POSTROUTING -o eth0 -s 0.0.0.0/0 -j MASQUERADE
-
-          iptables -t nat -L
-          netfilter-persistent save
-          cat /etc/iptables/rules.v4
 
   NATInstance1EIP:
     Type: AWS::EC2::EIP
     Properties:
       Domain: 'vpc'
       InstanceId: !Ref NATInstance1
+  
+  NATInstance1PrivateSubnetSubnetRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateSubnet1RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      InstanceId: !Ref NATInstance1
+
+  NATInstance2:
+    Type: AWS::EC2::Instance
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      InstanceType: t3.nano
+      KeyName: !Ref NATInstanceKeyName
+      ImageId: ami-00a36856283d67c39 #community nat instance ami
+      SourceDestCheck: False
+      IamInstanceProfile: !Ref NATInstanceProfile
+      SecurityGroupIds:
+        - !Ref NATInstanceSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} NAT Instance 2
+
+  NATInstance2EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: 'vpc'
+      InstanceId: !Ref NATInstance2
+  
+  NATInstance2PrivateSubnetSubnetRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateSubnet2RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      InstanceId: !Ref NATInstance2
 
   NATInstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: Nat
+      GroupName: Security Group for NAT instances
       GroupDescription: Open Port 22 for ssh
-      VpcId:
-        Fn::ImportValue: !Sub '${ExportStackName}-LabVPC'
+      VpcId: !Ref ApiVPC
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 0
@@ -316,3 +281,8 @@ Outputs:
     Value: !Ref HTTPSListener
     Export:
       Name: !Join [':', [ !Ref 'AWS::StackName', 'HTTPSListener' ] ]
+  NATInstanceSecurityGroup:
+    Description: nat instances
+    Value: !Ref NATInstanceSecurityGroup
+    Export:
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'NATInstanceSecurityGroup' ] ]  
