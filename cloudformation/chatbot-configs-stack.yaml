@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: .NET WebApi AWS Fargate in ECS Service / ECS Task definition / CodeBuild / CodeDeploy
+
+# Link Slack, AWS Chatbot, AWS Cloudwatch and user-bff & retail-bff together to alarm upon healthcheck failures
+
+Parameters:
+  StackName:
+    Description: Slackbot alerts chatbot
+    Type: String
+    Default: slackbot-alerts-chatbot
+  Stage:
+    Type: String
+
+Resources:
+  AlertsChannelChatbotConfig:
+    Type: AWS::Chatbot::SlackChannelConfiguration
+    Properties: 
+      ConfigurationName: bite-alerts-channel
+      IamRoleArn: !GetAtt ChatbotRole.Arn
+      SlackChannelId: C02D3L653JM
+      SlackWorkspaceId: T0279291J7M
+      SnsTopicArns: 
+        - !Ref SNSServiceCountAlarmTopic
+
+  ChatbotRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${StackName}-chatbot-role
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess 
+
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: chatbot.amazonaws.com
+            Action: sts:AssumeRole
+    
+  #This is a topic which has many alarms in them. The generic-bff-stack has alarms for each bff
+  SNSServiceCountAlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: "ECSServiceCountAlarm"
+
+Outputs:
+  SNSServiceCountAlarmTopic:
+    Description: The ARN of the SNSServiceCountAlarmTopic
+    Value: !Ref SNSServiceCountAlarmTopic
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'SNSServiceCountAlarmTopic' ] ]  

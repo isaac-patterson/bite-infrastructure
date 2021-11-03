@@ -1,0 +1,246 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: private subnet resources
+
+Parameters:
+  DBUser:
+    Type: String
+    Default: master
+  DBPassword:
+    Type: String
+    Default: deDiGDJQcafnyrML
+  DBName:
+    Type: String
+    Default: bite
+  StackName:
+    Description: An Application name that will be prefixed to resource names
+    Type: String
+    Default: private-subnet-stack
+  Stage:
+    Type: String
+  PrivateSubnet1:
+    Type: String
+  PrivateSubnet2:
+    Type: String
+  ApiVPC:
+    Type: String
+  PLBSecurityGroup:
+    Type: String
+  NATInstanceSecurityGroup:
+    Type: String
+
+Resources:
+  ECSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${StackName}-ecs-app-sg
+      GroupDescription: Access to the Fargate containers
+      VpcId: !Ref ApiVPC
+  
+  #this ingress allows inbound traffic to ECS services from all private IP addresses of the network interfaces assosiated with the source security group
+  #in this case from the public load ballancer
+  #every ec2 instance must have a security group
+  ECSSecurityGroupIngressTCP:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress TCP All Port from NAT SG
+      GroupId: !Ref 'ECSSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 1
+      ToPort: 65535
+      SourceSecurityGroupId: !Ref 'PLBSecurityGroup'
+
+  ECSSGNATInstanceIngressTCP:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress TCP All Port from ELB SG
+      GroupId: !Ref 'ECSSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 1
+      ToPort: 65535
+      SourceSecurityGroupId: !Ref 'NATInstanceSecurityGroup'
+
+  #ECS Cluster
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Sub ${StackName}-ecs-cluster
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} ECS Cluster
+        - Key: Project
+          Value: bite ecs cluster
+
+  MenuItemPhotoBucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: !Sub ${StackName}-menu-item-photo-bucket
+      VersioningConfiguration: 
+        Status: Enabled
+
+  #Aurora SQL
+  RDSCluster:
+    Type: "AWS::RDS::DBCluster"
+    DependsOn: DBSubnetGroup
+    Properties: 
+      DBClusterParameterGroupName: !Ref DBClusterParameterGroup
+      Engine: aurora
+      EngineMode: provisioned
+      EnableHttpEndpoint: True
+      MasterUserPassword: !Ref DBPassword
+      MasterUsername: !Ref DBUser
+      DBClusterIdentifier: bite-aurora-provisioned-db
+      DatabaseName: !Ref DBName
+      DBSubnetGroupName: !Ref DBSubnetGroup    
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} Aurora Provisioned Cluster   
+        - Key: Project
+          Value: .Net Core on AWS          
+      VpcSecurityGroupIds: 
+        - !Ref DBSecurityGroup                 
+
+  DBClusterParameterGroup: 
+    Type: "AWS::RDS::DBClusterParameterGroup"
+    Properties: 
+      Description: "CloudFormation Sample Aurora Cluster Parameter Group"
+      Family: aurora5.6
+      Parameters:
+        time_zone: US/Eastern
+
+  DBParameterGroup:
+    Type: 'AWS::RDS::DBParameterGroup'
+    Properties:
+      Description: !Ref 'AWS::StackName'
+      Family: aurora5.6
+
+  BiteDBInstance:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      AllowMajorVersionUpgrade: false
+      AutoMinorVersionUpgrade: true
+      CopyTagsToSnapshot: true
+      DBClusterIdentifier: !Ref RDSCluster
+      DBInstanceClass: db.t2.small
+      DBParameterGroupName: !Ref DBParameterGroup
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      Engine: aurora
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties: 
+      DBSubnetGroupDescription: RDS Subnet group for Aurora Serverless
+      DBSubnetGroupName: !Sub ${StackName}-aurora-subnet-group
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+      Tags:
+        - Key: Name
+          Value: !Sub ${StackName} RDS Subnet Group
+        - Key: Project
+          Value: bite
+  
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${StackName}-ecs-db-sg
+      GroupDescription: Access to the RDS
+      VpcId: !Ref ApiVPC
+
+  #this ingress allows inbound traffic to the db from all private IP addresses of the network interfaces assosiated with the source security group
+  #in the case all instances in all resources in the ecs cluster I think
+  #see https://stackoverflow.com/questions/45416882/aws-security-group-include-another-security-group 
+  #security group rules
+  DBSecurityGroupIngressTCP:
+    Type: AWS::EC2::SecurityGroupIngress
+    DependsOn: DBSecurityGroup
+    Properties:
+      Description: Ingress 3306 
+      GroupId: !Ref 'DBSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      SourceSecurityGroupId: !Ref ECSSecurityGroup
+
+  BastionHostIngressTCP:
+    Type: AWS::EC2::SecurityGroupIngress
+    DependsOn: DBSecurityGroup
+    Properties:
+      Description: Ingress 3306 
+      GroupId: !Ref 'DBSecurityGroup'
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      CidrIp: 10.0.0.186/32
+
+  #Amazon Systems Manager
+  SystemsManagerBasicParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/AuroraConnectionString"
+      Type: "String"
+      Value: !Join [ "",
+          [
+            "server=",
+            !Join [ "", [ !GetAtt BiteDBInstance.Endpoint.Address, "" ] ],
+            ";port=",
+            !GetAtt BiteDBInstance.Endpoint.Port,
+            ";database=", !Join [ "", [ !Ref DBName, "" ] ],
+            ";uid=", !Join [ "", [ !Ref DBUser, "" ] ],
+            ";password=", !Join [ "", [ !Ref DBPassword, "" ] ],
+            ";default command timeout=120",
+            ";SSLMode=None"
+          ]
+        ]       
+      Description: "SSM Parameter for maintaining the Aurora DB connection string."
+      # AllowedPattern: "^[a-zA-Z]{1,10}$"
+      Tags:
+        "Environment": "DEV"  
+  SystemsManagerBasicDBNameParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/DBName"
+      Type: "String"
+      Value: !Join [ "", [ !Ref DBName, "" ] ]
+      Description: "SSM Parameter for maintaining the Aurora DBName."
+      Tags:
+        "Environment": "DEV"    
+  SystemsManagerBasicDBUserParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/DBUser"
+      Type: "String"
+      Value: !Join [ "", [ !Ref DBUser, "" ] ]
+      Description: "SSM Parameter for maintaining the Aurora DBUser."
+      Tags:
+        "Environment": "DEV"          
+  SystemsManagerBasicDBPasswordParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/DBPassword"
+      Type: "String"
+      Value: !Join [ "", [ !Ref DBPassword, "" ] ]
+      Description: "SSM Parameter for maintaining the Aurora DBPassword."
+      Tags:
+        "Environment": "DEV"     
+  SystemsManagerBasicDBHostParameter:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Name: "/Database/Config/DBHost"
+      Type: "String"
+      Value: !Join [ "", [ !GetAtt RDSCluster.Endpoint.Address, "" ] ] 
+      Description: "SSM Parameter for maintaining the Aurora DB Host."
+      Tags:
+        "Environment": "DEV"      
+
+Outputs:
+  ECSCluster:
+    Description: The name of the ECS cluster
+    Value: !Ref ECSCluster
+    Export:
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSCluster' ]]    
+  ECSSecurityGroup:
+    Description: elastic container service security group
+    Value: !Ref ECSSecurityGroup
+    Export:
+      Name: !Join [':', [ !Ref 'AWS::StackName', 'ECSSecurityGroup' ] ]                

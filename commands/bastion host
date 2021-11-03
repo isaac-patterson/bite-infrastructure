@@ -1,0 +1,1 @@
+ssh -i C:\Users\Isaac\projects\KEYS\bite-bastion-host.pem ec2-user@ec2-52-70-218-209.compute-1.amazonaws.com -v

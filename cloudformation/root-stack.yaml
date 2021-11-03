@@ -1,0 +1,124 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Root/Parent stack for bite infrastructure
+
+Parameters:
+  Stage:
+    Type: String
+
+Resources:
+  UserWebAppStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: generic-website-stack.yaml
+      Parameters:
+        StackName: user-webapp
+        Stage: !Ref Stage
+        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/a6f96f59-91f2-43a9-9204-72e2fb25cb26 #cert for veni.buzz
+        S3BucketName: user-webapp
+        Domain: veni.buzz
+        Route53HostedZoneName: veni.buzz.
+        CloudFrontPriceClass: PriceClass_All
+  
+  RetailWebAppStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: generic-website-stack.yaml
+      Parameters:
+        StackName: retail-webapp
+        Stage: !Ref Stage
+        AwsCertificateArn: arn:aws:acm:us-east-1:117468630787:certificate/c5c11580-5bc8-4736-8efe-97e7ccfd397b #cert for veni.work
+        S3BucketName: retail-webapp
+        Domain: veni.work
+        Route53HostedZoneName: veni.work.
+        CloudFrontPriceClass: PriceClass_All
+
+  VPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: vpc-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+  
+  PublicSubnetStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: public-subnet-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+        PublicSubnet1: !GetAtt VPCStack.Outputs.PublicSubnet1
+        PublicSubnet2: !GetAtt VPCStack.Outputs.PublicSubnet2
+        PrivateSubnet1RouteTable: !GetAtt VPCStack.Outputs.PrivateSubnet1RouteTable
+        PrivateSubnet2RouteTable: !GetAtt VPCStack.Outputs.PrivateSubnet2RouteTable
+        ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
+        BastionHostKeyName: bite-bastion-host #ec2 key
+        NATInstanceKeyName: bite-nat-instance #ec2 key
+
+  PrivateSubnetStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: private-subnet-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+        PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
+        PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
+        ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
+        PLBSecurityGroup: !GetAtt PublicSubnetStack.Outputs.PLBSecurityGroup
+        NATInstanceSecurityGroup: !GetAtt PublicSubnetStack.Outputs.NATInstanceSecurityGroup
+  
+  UserBFFStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: generic-bff-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+        ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
+        PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
+        PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
+        ECSCluster: !GetAtt PrivateSubnetStack.Outputs.ECSCluster
+        ECSSecurityGroup: !GetAtt PrivateSubnetStack.Outputs.ECSSecurityGroup
+        ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
+        HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
+        StackName: user-bff-stack
+        ContainerPort: 443
+        ServiceName: user-bff #matches github repo name
+        DllFile: "user-bff.dll"
+        PathPattern: /user/*
+        DesiredTaskCount: 1 #place to 0 if there is no image in the ecr repository yet
+        ListnerRulePriority: 1
+        SNSServiceCountAlarmTopic: !GetAtt ChatbotStack.Outputs.SNSServiceCountAlarmTopic
+
+  RetailBFFStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: generic-bff-stack.yaml
+      Parameters:
+        Stage: !Ref Stage
+        ApiVPC: !GetAtt VPCStack.Outputs.ApiVPC
+        PrivateSubnet1: !GetAtt VPCStack.Outputs.PrivateSubnet1
+        PrivateSubnet2: !GetAtt VPCStack.Outputs.PrivateSubnet2
+        ECSCluster: !GetAtt PrivateSubnetStack.Outputs.ECSCluster
+        ECSSecurityGroup: !GetAtt PrivateSubnetStack.Outputs.ECSSecurityGroup
+        ExternalUrl: !GetAtt PublicSubnetStack.Outputs.ExternalUrl
+        HTTPSListener: !GetAtt PublicSubnetStack.Outputs.HTTPSListener
+        StackName: retail-bff-stack
+        ContainerPort: 444
+        ServiceName: retail-bff #matches github repo name
+        DllFile: "retail-bff.dll"
+        PathPattern: /retail/*
+        DesiredTaskCount: 1 #place to 0 if there is no image in the ecr repository yet
+        ListnerRulePriority: 2
+        SNSServiceCountAlarmTopic: !GetAtt ChatbotStack.Outputs.SNSServiceCountAlarmTopic
+
+  CognitoStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: cognito-stack.yaml
+      Parameters: 
+        Stage: !Ref Stage
+
+  ChatbotStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: chatbot-configs-stack.yaml
+      Parameters: 
+        Stage: !Ref Stage

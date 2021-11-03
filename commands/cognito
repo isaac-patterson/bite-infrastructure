@@ -1,0 +1,6 @@
+#Reset Retail Userpool cognito password
+aws cognito-idp admin-set-user-password --user-pool-id us-east-1_UzgpuHlrX --username <username> --password <password> --permanent
+
+#Reset User Userpool cognito password
+aws cognito-idp admin-set-user-password --user-pool-id us-east-1_20hVjOHuO --username <username> --password <password> --permanent
+
