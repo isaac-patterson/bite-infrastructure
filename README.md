@@ -18,20 +18,23 @@ Restaurants can:
 
 # State of project:
 
-MVP completed, needs a bit of cleaning up though
-
-[All code repos can be found here](https://github.com/isaac-patterson?tab=repositories&q=bite&type=&language=&sort=)
+MVP completed, needs a bit of cleaning up though. All AWS is teared down and old commits squashed for sensitive information.
 
 
-Retail webapp: pretty polished
 
-BFFs: user-bff needs some extracting into microservices for a better architecture, needs more testing & monitoring etc
+[All code can be found here](https://github.com/isaac-patterson?tab=repositories&q=bite&type=&language=&sort=)
 
-iOS App: Done by a contractor, good luck with this
+Components
 
-Android App: Barely started 
+ - Retail webapp: pretty polished
 
-Infra: Cloudformation needs multi environment support to be added via mappings
+ - BFFs: user-bff needs some extracting into microservices for a better architecture, needs more testing & monitoring etc
+
+ - iOS App: Done by a contractor, good luck with this
+
+ - Android App: Barely started 
+
+ - Infra: Cloudformation needs multi environment support to be added via mappings
 
 # AWS Architecture
 
